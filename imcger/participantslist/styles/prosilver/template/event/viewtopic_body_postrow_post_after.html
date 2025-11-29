@@ -1,0 +1,74 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if not definition.IMCGER_PARTICIPAN_LIST and S_HAS_PTSL_LIST %}
+	{% DEFINE IMCGER_PARTICIPAN_LIST = true %}
+
+<div id="p4109" class="post bg2">
+	<div class="inner">
+		<div class="postbody" style="width: 100%;">
+			<div id="post_content4109">
+				<h3 class="first">
+					Teilnehmerliste
+				</h3>
+				<ul class="post-buttons">
+					<li>
+						<a href="#" title="Eintragen" class="button button-icon-only">
+							<i class="icon fa-user-plus fa-fw" aria-hidden="true"></i><span class="sr-only">Quote</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" title="Eintrag ändern" class="button button-icon-only">
+							<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">Edit</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" title="Eintrag löschen" class="button button-icon-only">
+							<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">Delete</span>
+						</a>
+					</li>
+				</ul>
+				<div class="content">
+					<table>
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Pers. Anzahl</th>
+								<th>Bemerkung</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Maximilian</td>
+								<td>1</td>
+								<td>Mit Motorrad und Zelt</td>
+							</tr>
+							<tr>
+								<td>Maximilian</td>
+								<td>1</td>
+								<td>Mit Motorrad und Zelt</td>
+							</tr>
+							<tr>
+								<td>Maximilian</td>
+								<td>1</td>
+								<td>Mit Motorrad und Zelt</td>
+							</tr>
+							<tr>
+								<td>Maximilian</td>
+								<td>1</td>
+								<td>Mit Motorrad und Zelt</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

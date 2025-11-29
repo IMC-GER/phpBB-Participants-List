@@ -1,0 +1,16 @@
+services:
+    imcger.participantslist.ptsl_acp_listener:
+        class: imcger\participantslist\event\ptsl_acp_listener
+        tags:
+            - { name: event.listener }
+            
+    imcger.participantslist.ptsl_main_listener:
+        class: imcger\participantslist\event\ptsl_main_listener
+        arguments:
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@template'
+            - '@dbal.conn'
+        tags:
+            - { name: event.listener }
