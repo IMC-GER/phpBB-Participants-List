@@ -7,6 +7,8 @@
  *
  #}
 
-<div><label for="ptsl_add">
-	<input type="checkbox" name="ptsl_add" id="ptsl_add"> Teilnehmerliste hinzufügen</label>
-</div>
+{% if S_PTSL_TOPIC_HAS_LIST %}
+	<div><label for="topic_ptsl_disp">
+		<input type="checkbox" name="topic_ptsl_disp" id="topic_ptsl_disp" {% if TOPIC_PTSL_DISP %} checked {% endif %}> {{ lang('PTSL_ADD_PTS_LIST') }}</label>
+	</div>
+{% endif %}

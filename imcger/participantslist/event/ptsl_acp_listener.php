@@ -14,8 +14,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ptsl_acp_listener implements EventSubscriberInterface
 {
-	protected int|null $forum_id = null;
-
 	/**
 	 * Assign functions defined in this class to event listeners in the core
 	 */

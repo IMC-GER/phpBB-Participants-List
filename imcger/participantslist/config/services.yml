@@ -12,5 +12,24 @@ services:
             - '@language'
             - '@template'
             - '@dbal.conn'
+            - '@request'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
         tags:
             - { name: event.listener }
+            
+    imcger.participantslist.ptsl_list_controller:
+        class: imcger\participantslist\controller\ptsl_list_controller
+        arguments:
+            - '@controller.helper'
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@template'
+            - '@dbal.conn'
+            - '@request'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'

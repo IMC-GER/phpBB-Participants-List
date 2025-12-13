@@ -28,14 +28,13 @@ class s_1_0_0 extends \phpbb\db\migration\migration
 	{
 		return [
 			'add_tables' => [
-				ext::PTSL_DATA_TABLE => [
+				$this->table_prefix . ext::PTSL_DATA_TABLE => [
 					'COLUMNS' => [
-						'ptsl_id'		=> ['UINT', NULL, 'auto_increment'],
+						'ptsl_id'		=> ['UINT', null, 'auto_increment'],
 						'topic_id'		=> ['UINT', 0],
 						'user_id'		=> ['UINT', 0],
-						'username'		=> ['VCHAR:255', ''],
 						'ptsl_number'	=> ['UINT', 0],
-						'ptsl_comment'	=> ['VCHAR:512', ''],
+						'ptsl_comment'	=> ['VCHAR:255', ''],
 					],
 					'PRIMARY_KEY' => 'ptsl_id',
 				],
@@ -52,7 +51,7 @@ class s_1_0_0 extends \phpbb\db\migration\migration
 	{
 		return [
 			'drop_tables' => [
-				ext::PTSL_DATA_TABLE,
+				$this->table_prefix . ext::PTSL_DATA_TABLE,
 			],
 			'drop_columns' => [
 				TOPICS_TABLE => [

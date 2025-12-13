@@ -38,5 +38,5 @@ $lang = array_merge($lang, [
 	'IMCGER_AT_REQUIRE_PHP'		=> 'Yours php Version is %1$s. Version %2$s is required.',
 	'IMCGER_AT_REQUIRE_PHPBB'	=> 'Yours phpBB Version is %1$s. Version %2$s is required.',
 
-	'ACL_F_IMCGER_PTSL_ENABLE'	=> 'Can create participants list',
+	'ACL_F_IMCGER_PTSL_ENABLE'	=> 'Can create participants list.',
 ]);

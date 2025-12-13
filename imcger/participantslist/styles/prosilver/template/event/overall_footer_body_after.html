@@ -1,0 +1,44 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if S_PTSL_TOPIC_HAS_LIST %}
+	<script>
+
+	/**
+	 * @var	imcger	object for pphpBB.
+	 */
+	if (typeof imcger != 'object') {
+		var imcger = {};
+	}
+
+	(function($) {  // Avoid conflicts with other libraries
+
+		'use strict';
+
+		imcger.plst = {};
+		imcger.plst.buttonLink = '';
+
+		imcger.plst.delEntry = function(button) {
+			imcger.plst.buttonLink = button.getAttribute('action-link');
+			imcger.plst.ptsName	   = button.getAttribute('pts-name');
+			let confirmMsgText = '<h3 class="alert_title">{{ lang("PTSL_TITLE") }} - ' + imcger.plst.ptsName + '</h3><div class="alert_text"><p>{{ lang("PTSL_CONFIRMBOX_TEXT")|e("js") }}</p><input type="button" name="confirm" value="{{ lang("YES")|e("js") }}" class="button2">&nbsp;&nbsp;<input type="button" name="cancel" value="{{ lang("NO")|e("js") }}" class="button2"></div>';
+
+			phpbb.confirm(confirmMsgText, imcger.plst.confirmDelEntry, true);
+		}
+
+		imcger.plst.confirmDelEntry = function(answerYes) {
+
+			if (answerYes) {
+				window.location.replace(imcger.plst.buttonLink);
+			}
+		}
+
+	})(jQuery); // Avoid conflicts with other libraries
+	</script>
+{% endif %}

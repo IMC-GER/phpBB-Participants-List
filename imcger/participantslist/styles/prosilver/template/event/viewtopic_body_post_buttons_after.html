@@ -1,0 +1,16 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if S_PTSL_TOPIC_HAS_LIST %}
+	<li>
+		<a href="{{ U_PTSL_GO_TO_LIST }}" title="{{ lang('PTSL_GO_TO_LIST') }}" class="button button-icon-only">
+			<i class="icon fa-list fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_GO_TO_LIST_SHORT') }}</span>
+		</a>
+	</li>
+{% endif %}

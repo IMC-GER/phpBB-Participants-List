@@ -12,9 +12,7 @@ namespace imcger\participantslist;
 
 class ext extends \phpbb\extension\base
 {
-	global $table_prefix;
-
-	public const PTSL_DATA_TABLE = $table_prefix . 'ptsl_data';
+	public const PTSL_DATA_TABLE = 'ptsl_data';
 
 	public function is_enableable()
 	{

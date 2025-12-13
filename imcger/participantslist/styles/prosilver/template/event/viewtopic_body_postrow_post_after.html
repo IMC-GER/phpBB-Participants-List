@@ -7,66 +7,73 @@
  *
  #}
 
-{% if not definition.IMCGER_PARTICIPAN_LIST and S_HAS_PTSL_LIST %}
+{% if not definition.IMCGER_PARTICIPAN_LIST and S_PTSL_TOPIC_HAS_LIST %}
+	{% INCLUDECSS '@imcger_participantslist/ptsl_common.css' %}
 	{% DEFINE IMCGER_PARTICIPAN_LIST = true %}
 
-<div id="p4109" class="post bg2">
+<div id="ptsl_anchor" class="post bg2">
 	<div class="inner">
 		<div class="postbody" style="width: 100%;">
-			<div id="post_content4109">
+			<div id="ptsl_content">
 				<h3 class="first">
-					Teilnehmerliste
+					{{ lang('PTSL_TITLE') }}
 				</h3>
 				<ul class="post-buttons">
+				{% if S_PTSL_USER_IN_LIST %}
 					<li>
-						<a href="#" title="Eintragen" class="button button-icon-only">
-							<i class="icon fa-user-plus fa-fw" aria-hidden="true"></i><span class="sr-only">Quote</span>
+						<a href="{{ U_PTSL_EDIT_LIST }}" title="{{ lang('PTSL_EDIT_LIST') }}" class="button button-icon-only">
+							<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_EDIT_LIST_SHORT') }}</span>
 						</a>
 					</li>
 					<li>
-						<a href="#" title="Eintrag ändern" class="button button-icon-only">
-							<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">Edit</span>
+						<a href="javascript:void(0)" onclick="imcger.plst.delEntry(this)" action-link="{{ U_PTSL_DEL_FROM_LIST }}" pts-name="{{ PTSL_USERNAME }}" title="{{ lang('PTSL_DEL_FROM_LIST') }}" class="button button-icon-only">
+							<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_DEL_FROM_LIST_SHORT') }}</span>
 						</a>
 					</li>
+				{% else %}
 					<li>
-						<a href="#" title="Eintrag löschen" class="button button-icon-only">
-							<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">Delete</span>
+						<a href="{{ U_PTSL_ADD_TO_LIST }}" title="{{ lang('PTSL_ADD_TO_LIST') }}" class="button button-icon-only">
+							<i class="icon fa-user-plus fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_ADD_TO_LIST_SHORT') }}</span>
 						</a>
 					</li>
+				{% endif %}
 				</ul>
-				<div class="content">
-					<table>
+				<div id="ptsl-table" class="content">
+				{% if ptsl_table %}
+					<table class="zebra-list">
 						<thead>
 							<tr>
-								<th>Name</th>
-								<th>Pers. Anzahl</th>
-								<th>Bemerkung</th>
+								<th>{{ lang('PTSL_NAME') }}</th>
+								<th>{{ lang('PTSL_PTS_NUMBER_SHORT') }}</th>
+								<th>{{ lang('PTSL_COMMENT') }}</th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
+						{% for row in ptsl_table %}
 							<tr>
-								<td>Maximilian</td>
-								<td>1</td>
-								<td>Mit Motorrad und Zelt</td>
+								<td>{{ row.PTSL_USERNAME|e }}</td>
+								<td>{{ row.PTSL_NUMBER }}</td>
+								<td>{{ row.PTSL_COMMENT|e }}</td>
+								<td>
+									{% if S_PTSL_M_EDIT %}
+										<a href="{{ row.U_PTSL_MOD_EDIT }}" title="{{ lang('PTSL_EDIT_LIST') }}" class="button button-icon-only">
+											<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_EDIT_LIST_SHORT') }}</span>
+										</a>
+									{% endif %}
+									{% if S_PTSL_M_DELETE %}
+										<a href="javascript:void(0)" onclick="imcger.plst.delEntry(this)" action-link="{{ row.U_PTSL_MOD_DEL }}" pts-name="{{ row.PTSL_USERNAME }}" title="{{ lang('PTSL_DEL_FROM_LIST') }}" class="button button-icon-only">
+											<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_DEL_FROM_LIST_SHORT') }}</span>
+										</a>
+									{% endif %}
+								</td>
 							</tr>
-							<tr>
-								<td>Maximilian</td>
-								<td>1</td>
-								<td>Mit Motorrad und Zelt</td>
-							</tr>
-							<tr>
-								<td>Maximilian</td>
-								<td>1</td>
-								<td>Mit Motorrad und Zelt</td>
-							</tr>
-							<tr>
-								<td>Maximilian</td>
-								<td>1</td>
-								<td>Mit Motorrad und Zelt</td>
-							</tr>
+						{% endfor %}
 						</tbody>
 					</table>
+				{% endif %}
 				</div>
+				<div id="ptsl-sum-text">{{ PTSL_NUMBER_SUM }}</div>
 			</div>
 		</div>
 	</div>

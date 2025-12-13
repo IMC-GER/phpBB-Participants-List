@@ -1,0 +1,82 @@
+/**
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ */
+
+/* Participants List Form */
+#ptsl-wrap label {
+	display: block;
+	font-size: 1.2em;
+	line-height: 1.4em;
+}
+
+#ptsl_comment_wrap {
+	max-width: max-content;
+}
+
+#ptsl_comment_wrap textarea {
+	width: 100%;
+}
+
+#ptsl_count_comment {
+	float: right;
+}
+
+/* Participants List Table */
+#ptsl_anchor {
+	margin-bottom: 1.4em;
+}
+
+#ptsl-sum-text {
+	font-size: 1.2em;
+	line-height: 2em;
+}
+
+#ptsl-table table {
+	margin: left;
+	line-height: 1.4em;
+}
+
+#ptsl-table table thead {
+	font-size: 1.1em;
+}
+
+#ptsl-table table td,
+#ptsl-table table th {
+	padding: 0.5em 0.3em;
+	text-align: left;
+}
+
+#ptsl-table table thead th {
+	text-align: left;
+}
+
+#ptsl-table table tbody {
+	border-top: black 1px solid;
+	border-bottom: black 1px solid;
+}
+
+#ptsl-table table tbody tr:hover td {
+	background-color: #CADCEB;
+}
+
+#ptsl-table table td:nth-child(2) {
+	text-align: center;
+}
+
+#ptsl-table table th:nth-child(3) {
+	width: 100%;
+}
+
+#ptsl-table table td:nth-child(3) {
+	width: 100%;
+	word-break: break-word;
+}
+
+#ptsl-table table tbody td:last-child {
+	white-space: nowrap;
+}

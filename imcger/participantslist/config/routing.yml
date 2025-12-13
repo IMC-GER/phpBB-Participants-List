@@ -1,0 +1,4 @@
+imcger_participantslist_list_controller:
+    path: /ptsl/{process}
+    defaults:
+        _controller: 'imcger.participantslist.ptsl_list_controller:processing'

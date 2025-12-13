@@ -62,6 +62,6 @@ class v_1_0_0  extends \phpbb\db\migration\migration
 				['permission.role_exists', ['ROLE_FORUM_NEW_MEMBER']],
 				['permission.permission_unset',	['ROLE_FORUM_NEW_MEMBER', 'f_imcger_ptsl_enable']],
 			]],
-		]
+		];
 	}
 }

@@ -1,0 +1,48 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% INCLUDECSS '@imcger_participantslist/ptsl_common.css' %}
+{% INCLUDEJS '@imcger_participantslist/ptsl_edit_list_body.js' %}
+{% include 'overall_header.html' %}
+
+<h2 class="forum-title"><a href="{{ U_PTSL_TOPIC }}">{{ lang('PTSL_TITLE') }}</a></h2>
+	<div class="panel">
+		<div class="inner">
+			<div class="content">
+				<div id="ptsl-wrap">
+
+					<form method="post" action="{U_PTSL_ACTION}" class="ptsl_form" accept-charset="UTF-8">
+						<label for="username">{{ lang('PTSL_NAME') ~ lang('COLON') }}</label>
+						<input type="text" id="username" name="username" size="30" value="{{ PTSL_USERNAME }}" readonly><br><br>
+
+						<label for="ptsl_number">{{ lang('PTSL_PTS_NUMBER') ~ lang('COLON') }}</label>
+						<input id="ptsl_number" name="ptsl_number" type="number" value="{{ PTSL_NUMBER }}" min="1" max="100"><br><br>
+
+						<div id="ptsl_comment_wrap">
+							<label for="ptsl_comment">{{ lang('PTSL_COMMENT') ~ lang('COLON') }}</label>
+							<textarea id="ptsl_comment" name="ptsl_comment" rows="4" cols="50" maxlength="230">{{ PTSL_COMMENT }}</textarea>
+							<span id="ptsl_count_comment">0 / 230</span>
+						</div><br><br>
+
+						<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">
+
+						{S_FORM_TOKEN}
+						{S_HIDDEN_FIELDS}
+						<input type="text" id="ptsl_id" name="ptsl_id" value="{{ PTSL_ID }}" hidden>
+						<input type="text" id="user_id" name="user_id" value="{{ PTSL_USER_ID }}" hidden>
+						<input type="text" id="topic_id" name="topic_id" value="{{ PTSL_TOPIC_ID }}" hidden>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include 'overall_footer.html' %}

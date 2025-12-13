@@ -35,8 +35,25 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-	'IMCGER_AT_REQUIRE_PHP'		=> 'Ihre php Version ist %1$s. Benötigt wird eine Version %2$s.',
-	'IMCGER_AT_REQUIRE_PHPBB'	=> 'Ihre phpBB Version ist %1$s. Benötigt wird eine Version %2$s.',
+	'PTSL_TITLE'				=> 'Teilnehmerliste',
+	'PTSL_NAME'					=> 'Name',
+	'PTSL_PTS_NUMBER_SHORT'		=> 'TN',
+	'PTSL_PTS_NUMBER'			=> 'Anzahl der Teilnehmer',
+	'PTSL_COMMENT'				=> 'Bemerkung',
+	'PTSL_PTS_SUM_STRING'		=> 'Es haben sich %1$d Teilnehmer angemeldet.',
+	'PTSL_CONFIRMBOX_TEXT'		=> 'Bist du dir sicher das du diesen Eintrag löschen möchtest.<br><b>Die Löschung kann nicht rückgänig gemacht werden.</b>',
+	'PTSL_HAS_NO_PERMISSION'	=> 'Du hast keine Berechtigung, diese Aktion auszuführen.',
+	'PTSL_SAVE'					=> 'Speichern',
 
-	'ACL_F_IMCGER_PTSL_ENABLE'	=> 'Kann Teilnehmerliste erstellen.',
+	'PTSL_EDIT_LIST_SHORT'		=> 'Bearbeiten',
+	'PTSL_EDIT_LIST'			=> 'Eintrag bearbeiten',
+	'PTSL_DEL_FROM_LIST_SHORT'	=> 'Löschen',
+	'PTSL_DEL_FROM_LIST'		=> 'Eintrag löschen',
+	'PTSL_ADD_TO_LIST_SHORT'	=> 'Eintragen',
+	'PTSL_ADD_TO_LIST'			=> 'Teilnehmer eintragen',
+
+	'PTSL_GO_TO_LIST_SHORT'		=> 'TN-Liste',
+	'PTSL_GO_TO_LIST'			=> 'Zur Teilnehmerliste',
+
+	'PTSL_ADD_PTS_LIST'			=> 'Teilnehmerliste hinzufügen',
 ]);

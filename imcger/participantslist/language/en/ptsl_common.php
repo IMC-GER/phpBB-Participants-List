@@ -35,8 +35,25 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-	'IMCGER_AT_REQUIRE_PHP'		=> 'Ihre php Version ist %1$s. Benötigt wird eine Version %2$s.',
-	'IMCGER_AT_REQUIRE_PHPBB'	=> 'Ihre phpBB Version ist %1$s. Benötigt wird eine Version %2$s.',
+	'PTSL_TITLE'				=> 'List of participants',
+	'PTSL_NAME'					=> 'Name',
+	'PTSL_PTS_NUMBER_SHORT'		=> 'Pts.',
+	'PTSL_PTS_NUMBER'			=> 'Number of participants',
+	'PTSL_COMMENT'				=> 'Comment',
+	'PTSL_PTS_SUM_STRING'		=> '%1$d participants have registered.',
+	'PTSL_CONFIRMBOX_TEXT'		=> 'Are you sure you want to delete this entry?<br><b>The deletion cannot be undone.</b>',
+	'PTSL_HAS_NO_PERMISSION'	=> 'You do not have permission to perform this action.',
+	'PTSL_SAVE'					=> 'Save',
 
-	'ACL_F_IMCGER_PTSL_ENABLE'	=> 'Kann Teilnehmerliste erstellen.',
+	'PTSL_EDIT_LIST_SHORT'		=> 'Edit',
+	'PTSL_EDIT_LIST'			=> 'Edit entry',
+	'PTSL_DEL_FROM_LIST_SHORT'	=> 'Delete',
+	'PTSL_DEL_FROM_LIST'		=> 'Delete entry',
+	'PTSL_ADD_TO_LIST_SHORT'	=> 'Register',
+	'PTSL_ADD_TO_LIST'			=> 'Register participant',
+
+	'PTSL_GO_TO_LIST_SHORT'		=> 'Pts.-list',
+	'PTSL_GO_TO_LIST'			=> 'Go to the participants list',
+
+	'PTSL_ADD_PTS_LIST'			=> 'Add participant list',
 ]);
