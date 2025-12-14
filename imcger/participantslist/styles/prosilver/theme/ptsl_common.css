@@ -19,11 +19,13 @@
 }
 
 #ptsl_comment_wrap textarea {
-	width: 100%;
+	height: 66px;
+	width: auto;
 }
 
 #ptsl_count_comment {
 	float: right;
+	margin-right: 0.2em;
 }
 
 /* Participants List Table */

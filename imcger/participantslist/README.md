@@ -12,7 +12,7 @@ If the first post in the topic is deleted, the associated list is also deleted a
 ## Screenshots
 - [Participants List](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/list_reg_user.png)
 - [Registrations Form](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/registration_form.png)
-- [Moderators View](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/moderators.png)
+- [Moderators View](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/list_moderators.png)
 - [Forum permissions](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/forum_permissions.png)
 
 ## Requirements

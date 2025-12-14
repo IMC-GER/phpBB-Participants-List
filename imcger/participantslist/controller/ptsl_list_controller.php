@@ -16,6 +16,7 @@ class ptsl_list_controller
 {
 	private int $topic_id;
 	private int $user_id;
+	private int $ptsl_id;
 
 	/**
 	 * Constructor
