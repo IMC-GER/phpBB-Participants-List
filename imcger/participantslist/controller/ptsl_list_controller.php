@@ -67,7 +67,7 @@ class ptsl_list_controller
 					$data['user_id']		= $this->request->variable('user_id', 0, true);
 					$data['topic_id']		= $this->request->variable('topic_id', 0);
 					$data['ptsl_number']	= $this->request->variable('ptsl_number', '');
-					$data['ptsl_comment']	= censor_text($this->request->variable('ptsl_comment', '', true));
+					$data['ptsl_comment']	= $this->db->sql_escape(censor_text($this->request->variable('ptsl_comment', '', true)));
 
 					$this->check_permission($this->get_list_data($process, $data['user_id'], $data['topic_id']));
 
@@ -165,7 +165,7 @@ class ptsl_list_controller
 		$sql_array = [];
 
 		$sql_array['edit'] = [
-			'SELECT'    => 'pd.*, pd.user_id, u.username, t.topic_id, t.topic_title, t.forum_id',
+			'SELECT'    => 'pd.*, u.username, t.topic_id, t.topic_title, t.forum_id',
 			'FROM'      => [$this->table_prefix . ext::PTSL_DATA_TABLE => 'pd'],
 			'LEFT_JOIN' => [
 				[

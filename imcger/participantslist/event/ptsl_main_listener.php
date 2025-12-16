@@ -63,7 +63,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 		}
 
 		// Only show checkbox when editing the first post in topic
-		if ($event['mode'] == 'post' || ($event['mode'] == 'edit' && $event['post_id'] == $event['post_data']['topic_first_post_id']))
+		if (($event['mode'] == 'post' || ($event['mode'] == 'edit') && $event['post_id'] == $event['post_data']['topic_first_post_id']) && $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id']))
 		{
 			$this->template->assign_vars([
 				'S_PTSL_TOPIC_HAS_LIST'	=> true,
@@ -136,7 +136,8 @@ class ptsl_main_listener implements EventSubscriberInterface
 		$user_id		= $this->user->data['user_id'];
 		$user_inlist	= false;
 		$topic_id		= $event['topic_id'];
-		$ptsl_enable	= $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id'])	&& $this->user->data['is_registered'] && $event['topic_data']['topic_ptsl_disp'];
+		// $ptsl_enable	= $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id'])	&& $this->user->data['is_registered'] && $event['topic_data']['topic_ptsl_disp'];
+		$ptsl_enable	= $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id'])	&& $event['topic_data']['topic_ptsl_disp'];
 		$ptsl_m_edit	= $this->auth->acl_get('m_edit', $event['forum_id']);
 		$ptsl_m_delete	= $this->auth->acl_get('m_delete', $event['forum_id']);
 		$url_list_add	= $this->helper->route('imcger_participantslist_list_controller', ['process' => 'add']);

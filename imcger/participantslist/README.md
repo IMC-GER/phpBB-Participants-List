@@ -37,7 +37,12 @@ Go to "ACP" > "Customise" > "Manage extensions" and enable the "Show Hidden Pass
 
 ## Changelog
 
-### v1.0.0-rc (13-12-2024)
+### v1.0.0-rc2 (16-12-2025)
+- Fixed: Incorrect permissions have been granted for the role with full access.
+- Fixed: Sign counter leaves position when changing the size of the textarea
+- Fixed: Footer display incorrect
+
+### v1.0.0-rc (13-12-2025)
 
 ## License
 [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)

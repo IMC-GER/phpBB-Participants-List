@@ -24,7 +24,7 @@ class v_1_0_0  extends \phpbb\db\migration\migration
 
 			['if', [
 				['permission.role_exists', ['ROLE_FORUM_FULL']],
-				['permission.permission_set', ['ROLE_FORUM_FULL', 'f_imcger_ptsl_enable']],
+				['permission.permission_unset', ['ROLE_FORUM_FULL', 'f_imcger_ptsl_enable']],
 			]],
 			['if', [
 				['permission.role_exists', ['ROLE_FORUM_NOACCESS']],
