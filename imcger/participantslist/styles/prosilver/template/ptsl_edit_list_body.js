@@ -14,5 +14,5 @@ function imcgerPtslCountSign(e) {
 	document.getElementById("ptsl_count_comment").innerText = imcgerPtslNewtext;
 }
 
-document.getElementById("ptsl_comment").addEventListener("keyup", imcgerPtslCountSign);
-document.getElementById("ptsl_comment").dispatchEvent(new Event("keyup"));
+document.getElementById("ptsl_comment").addEventListener("selectionchange", imcgerPtslCountSign);
+document.getElementById("ptsl_comment").dispatchEvent(new Event("selectionchange"));

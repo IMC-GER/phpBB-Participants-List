@@ -7,40 +7,34 @@
  *
  #}
 
-{% if not definition.IMCGER_PARTICIPAN_LIST and S_PTSL_TOPIC_HAS_LIST %}
+{% if not definition.IMCGER_PARTICIPAN_LIST and S_PTSL_CAN_VIEW_LIST %}
 	{% INCLUDECSS '@imcger_participantslist/ptsl_common.css' %}
 	{% DEFINE IMCGER_PARTICIPAN_LIST = true %}
 
 <div id="ptsl_anchor" class="post bg2">
 	<div class="inner">
-		<div class="postbody" style="width: 100%;">
+		<div class="postbody">
 			<div id="ptsl_content">
 				<h3 class="first">
 					{{ lang('PTSL_TITLE') }}
 				</h3>
-				<ul class="post-buttons">
-				{% if S_PTSL_USER_IN_LIST %}
-					<li>
+				<div id="plst_list_button" class="post-buttons">
+				{% if S_PTSL_USER_IN_LIST and S_REGISTERED_USER %}
 						<a href="{{ U_PTSL_EDIT_LIST }}" title="{{ lang('PTSL_EDIT_LIST') }}" class="button button-icon-only">
 							<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_EDIT_LIST_SHORT') }}</span>
 						</a>
-					</li>
-					<li>
 						<a href="javascript:void(0)" onclick="imcger.plst.delEntry(this)" action-link="{{ U_PTSL_DEL_FROM_LIST }}" pts-name="{{ PTSL_USERNAME }}" title="{{ lang('PTSL_DEL_FROM_LIST') }}" class="button button-icon-only">
-							<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_DEL_FROM_LIST_SHORT') }}</span>
+							<i class="icon fa-times fa-fw" aria-hidden="true"></i>
 						</a>
-					</li>
-				{% else %}
-					<li>
+				{% elseif S_REGISTERED_USER %}
 						<a href="{{ U_PTSL_ADD_TO_LIST }}" title="{{ lang('PTSL_ADD_TO_LIST') }}" class="button button-icon-only">
-							<i class="icon fa-user-plus fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_ADD_TO_LIST_SHORT') }}</span>
+							<i class="icon fa-user-plus fa-fw" aria-hidden="true"></i>
 						</a>
-					</li>
 				{% endif %}
-				</ul>
+				</div>
 				<div id="ptsl-table" class="content">
 				{% if ptsl_table %}
-					<table class="zebra-list">
+					<table>
 						<thead>
 							<tr>
 								<th>{{ lang('PTSL_NAME') }}</th>
@@ -51,19 +45,19 @@
 						</thead>
 						<tbody>
 						{% for row in ptsl_table %}
-							<tr>
+							<tr class="bg{{ (loop.index + 1) % 2 + 1 }}">
 								<td>{{ row.PTSL_USERNAME|e }}</td>
 								<td>{{ row.PTSL_NUMBER }}</td>
 								<td>{{ row.PTSL_COMMENT|e }}</td>
 								<td>
 									{% if S_PTSL_M_EDIT %}
 										<a href="{{ row.U_PTSL_MOD_EDIT }}" title="{{ lang('PTSL_EDIT_LIST') }}" class="button button-icon-only">
-											<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_EDIT_LIST_SHORT') }}</span>
+											<i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
 										</a>
 									{% endif %}
 									{% if S_PTSL_M_DELETE %}
 										<a href="javascript:void(0)" onclick="imcger.plst.delEntry(this)" action-link="{{ row.U_PTSL_MOD_DEL }}" pts-name="{{ row.PTSL_USERNAME }}" title="{{ lang('PTSL_DEL_FROM_LIST') }}" class="button button-icon-only">
-											<i class="icon fa-times fa-fw" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_DEL_FROM_LIST_SHORT') }}</span>
+											<i class="icon fa-times fa-fw" aria-hidden="true"></i>
 										</a>
 									{% endif %}
 								</td>
@@ -73,7 +67,7 @@
 					</table>
 				{% endif %}
 				</div>
-				<div id="ptsl-sum-text">{{ PTSL_NUMBER_SUM }}</div>
+				<div id="ptsl-sum-text">{{ lang('PTSL_PTS_SUM_STRING', PTSL_NUMBER_SUM) }}</div>
 			</div>
 		</div>
 	</div>

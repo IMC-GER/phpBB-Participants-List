@@ -8,6 +8,11 @@
  */
 
 /* Participants List Form */
+#ptsl-wrap {
+	margin-bottom: .6em;
+	font-size: 1.1em;
+}
+
 #ptsl-wrap label {
 	display: block;
 	font-size: 1.2em;
@@ -21,6 +26,7 @@
 #ptsl_comment_wrap textarea {
 	height: 66px;
 	width: auto;
+	max-width: 100%;
 }
 
 #ptsl_count_comment {
@@ -31,6 +37,10 @@
 /* Participants List Table */
 #ptsl_anchor {
 	margin-bottom: 1.4em;
+}
+
+#ptsl_anchor .postbody {
+	width: 100%
 }
 
 #ptsl-sum-text {
@@ -63,7 +73,7 @@
 }
 
 #ptsl-table table tbody tr:hover td {
-	background-color: #CADCEB;
+	background-color: #CADCEB; /* Here can you change the colour for the mouse over effect */
 }
 
 #ptsl-table table td:nth-child(2) {
@@ -82,3 +92,14 @@
 #ptsl-table table tbody td:last-child {
 	white-space: nowrap;
 }
+
+/* Participants List buttons in title line */
+#plst_list_button {
+	height: 1em;
+}
+
+#plst_list_button i {
+	font-size: 1.5em;
+	margin: 0.2em auto;
+}
+

@@ -1,8 +1,8 @@
 # phpBB Participants List
 
 ## Description
-With this extension, the creator of a new topic can add a participant list after their first post. Only registered users can see this list and add themselves to it.
-The list is activated when creating a post using the “Add participant list” option.
+With this extension, the creator of a new topic can add a participant list after their first post.
+Users with the “Can see participant list” permission can view the participant list. Only registered users can add a list to the topic and add themselves to the list. The list is activated when the first post is created using the “Add participant list” option.
 
 This function can be activated in forums with the forum right “Can create participants list”.
 Moderators with the permissions “Can edit posts” and “Can permanently delete posts” can change or delete entries in the list.
@@ -21,21 +21,31 @@ If the first post in the topic is deleted, the associated list is also deleted a
 
 ## Installation
 Copy the extension to `phpBB3/ext/imcger/participantslist`.
-Go to "ACP" > "Customise" > "Manage extensions" and enable the "Show Hidden Password" extension.
+Go to “ACP” > “Customise” > “Manage extensions” and enable the “Show Hidden Password” extension.
+After enable zhe extension go to “ACP” > “Permissions” > “Forum permissions”. Select a Forum and add the permission “Add participant list” for registered user.
 
 ## Update
 - Navigate in the ACP to `Customise -> Manage extensions`.
-- Click the `Disable` link for "Participants List".
+- Click the `Disable` link for “Participants List”.
 - Delete the `participantslist` folder from `phpBB3/ext/imcger/`.
 - Copy the extension to `phpBB3/ext/imcger/participantslist`.
-- Go to "ACP" > "Customise" > "Manage extensions" and enable the "Participants List" extension.
+- Go to “ACP” > “Customise” > “Manage extensions” and enable the “Participants List” extension.
 
 ## Uninstallation
 - Navigate in the ACP to `Customise -> Manage extensions`.
-- Click the `Disable` link for "Participants List".
+- Click the `Disable` link for “Participants List”.
 - To permanently uninstall, click `Delete Data`, then delete the `participantslist` folder from `phpBB3/ext/imcger/`.
 
 ## Changelog
+
+### v1.1.0-b1 (04-01-2025)
+- Fixed: Incorrect colours in list while using css-class `zebra-list`.
+- Fixed: Sign counter don't count when paste text.
+- Added: Button properties can be changed in css-file.
+- Added: Support for emojis in comment.
+- Added: User Permission “Can see participant list”.
+- Changed: Improved permission check.
+- Changed: Improved db-query for the breadcrumbs menue.
 
 ### v1.0.0-rc2 (16-12-2025)
 - Fixed: Incorrect permissions have been granted for the role with full access.

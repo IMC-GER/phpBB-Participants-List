@@ -30,5 +30,6 @@ class ptsl_acp_listener implements EventSubscriberInterface
 	public function add_permissions(object $event): void
 	{
 		$event->update_subarray('permissions', 'f_imcger_ptsl_enable', ['lang' => 'ACL_F_IMCGER_PTSL_ENABLE', 'cat' => 'content']);
+		$event->update_subarray('permissions', 'u_imcger_ptsl_view',   ['lang' => 'ACL_U_IMCGER_PTSL_VIEW',	  'cat' => 'post']);
 	}
 }

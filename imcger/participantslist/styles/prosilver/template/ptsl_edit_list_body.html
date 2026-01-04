@@ -17,7 +17,7 @@
 			<div class="content">
 				<div id="ptsl-wrap">
 
-					<form method="post" action="{U_PTSL_ACTION}" class="ptsl_form" accept-charset="UTF-8">
+					<form method="post" action="{{ U_PTSL_ACTION }}" class="ptsl_form" accept-charset="UTF-8">
 						<label for="username">{{ lang('PTSL_NAME') ~ lang('COLON') }}</label>
 						<input type="text" id="username" name="username" size="30" value="{{ PTSL_USERNAME }}" readonly><br><br>
 
@@ -32,8 +32,8 @@
 
 						<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">
 
-						{S_FORM_TOKEN}
-						{S_HIDDEN_FIELDS}
+						{{ S_FORM_TOKEN }}
+						{{ S_HIDDEN_FIELDS }}
 						<input type="text" id="ptsl_id" name="ptsl_id" value="{{ PTSL_ID }}" hidden>
 						<input type="text" id="user_id" name="user_id" value="{{ PTSL_USER_ID }}" hidden>
 						<input type="text" id="topic_id" name="topic_id" value="{{ PTSL_TOPIC_ID }}" hidden>
@@ -43,5 +43,6 @@
 			</div>
 		</div>
 	</div>
+	<br>
 
 {% include 'overall_footer.html' %}

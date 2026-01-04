@@ -45,11 +45,8 @@ $lang = array_merge($lang, [
 	'PTSL_HAS_NO_PERMISSION'	=> 'You do not have permission to perform this action.',
 	'PTSL_SAVE'					=> 'Save',
 
-	'PTSL_EDIT_LIST_SHORT'		=> 'Edit',
 	'PTSL_EDIT_LIST'			=> 'Edit entry',
-	'PTSL_DEL_FROM_LIST_SHORT'	=> 'Delete',
 	'PTSL_DEL_FROM_LIST'		=> 'Delete entry',
-	'PTSL_ADD_TO_LIST_SHORT'	=> 'Register',
 	'PTSL_ADD_TO_LIST'			=> 'Register participant',
 
 	'PTSL_GO_TO_LIST_SHORT'		=> 'Pts.-list',
