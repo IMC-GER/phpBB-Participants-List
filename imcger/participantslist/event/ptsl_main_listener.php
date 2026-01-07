@@ -172,7 +172,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 				$ptsl_table[] = [
 					'PTSL_ID'			=> $row['ptsl_id'],
 					'PTSL_USER_ID'		=> $row['user_id'],
-					'PTSL_USERNAME'		=> $row['username'],
+					'PTSL_USERNAME'		=> htmlspecialchars_decode($row['username']),
 					'PTSL_NUMBER'		=> $row['ptsl_number'],
 					'PTSL_COMMENT'		=> $comment,
 					'U_PTSL_MOD_EDIT'	=> append_sid($url_list_edit, "t={$topic_id}&amp;id={$row['ptsl_id']}"),
@@ -192,7 +192,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'ptsl_table'			=> $ptsl_table,
 				'PTSL_TOPIC_ID'			=> $topic_id,
 				'PTSL_NUMBER_SUM'		=> $ptsl_number_sum,
-				'PTSL_USERNAME'			=> $this->user->data['username'],
+				'PTSL_USERNAME'			=> htmlspecialchars_decode($this->user->data['username']),
 				'S_PTSL_CAN_VIEW_LIST'	=> $ptsl_u_view,
 				'S_PTSL_M_EDIT'			=> $ptsl_m_edit,
 				'S_PTSL_M_DELETE'		=> $ptsl_m_delete,
