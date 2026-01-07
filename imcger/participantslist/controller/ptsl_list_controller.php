@@ -146,8 +146,8 @@ class ptsl_list_controller
 
 				if ($this->check_permission($process, $data))
 				{
-					$ptsl_id = $this->ptsl_id ?: $data['ptsl_id'];
-					$sql	 = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_DATA_TABLE . ' WHERE ptsl_id = ' . (int) $ptsl_id;
+					$sql = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_DATA_TABLE . '
+							WHERE ptsl_id = ' . (int) $data['ptsl_id'];
 
 					$this->db->sql_query($sql);
 				}
