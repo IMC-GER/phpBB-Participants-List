@@ -22,7 +22,7 @@ If the first post in the topic is deleted, the associated list is also deleted a
 ## Installation
 Copy the extension to `phpBB3/ext/imcger/participantslist`.
 Go to “ACP” > “Customise” > “Manage extensions” and enable the “Show Hidden Password” extension.
-After enable zhe extension go to “ACP” > “Permissions” > “Forum permissions”. Select a Forum and add the permission “Add participant list” for registered user.
+After enable the extension go to “ACP” > “Permissions” > “Forum permissions”. Select a Forum and add the permission “Add participant list” for registered user.
 
 ## Update
 - Navigate in the ACP to `Customise -> Manage extensions`.
@@ -38,7 +38,7 @@ After enable zhe extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
-### v1.1.0-b1 (04-01-2025)
+### v1.1.0-b1 (04-01-2026)
 - Fixed: Incorrect colours in list while using css-class `zebra-list`.
 - Fixed: Sign counter don't count when paste text.
 - Added: Button properties can be changed in css-file.

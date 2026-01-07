@@ -94,12 +94,11 @@
 }
 
 /* Participants List buttons in title line */
-#plst_list_button {
+#ptsl-list-button {
 	height: 1em;
 }
 
-#plst_list_button i {
-	font-size: 1.5em;
+#ptsl-list-button i {
+	font-size: 1.618em;
 	margin: 0.2em auto;
 }
-
