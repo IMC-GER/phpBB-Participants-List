@@ -10,28 +10,43 @@
 /* Participants List Form */
 #ptsl-wrap {
 	margin-bottom: .6em;
-	font-size: 1.1em;
+	max-width: 800px;
 }
 
-#ptsl-wrap label {
-	display: block;
-	font-size: 1.2em;
-	line-height: 1.4em;
+#ptsl-wrap dt {
+	margin-bottom: .2em;
+	width: 25%;
+}
+
+#ptsl-wrap dd {
+	margin-left: 26%;
 }
 
 #ptsl_comment_wrap {
-	max-width: max-content;
+	max-width: 95%;
 }
 
 #ptsl_comment_wrap textarea {
-	height: 66px;
-	width: auto;
-	max-width: 100%;
+	width: calc(100% - 8px);
 }
 
-#ptsl_count_comment {
+#ptsl_comment_count {
 	float: right;
 	margin-right: 0.2em;
+}
+
+@media (max-width: 700px) {
+	#ptsl-wrap dt {
+		width: unset;
+	}
+
+	#ptsl-wrap dd {
+		margin-left: unset;
+	}
+
+	#ptsl_comment_wrap textarea {
+		width: 100%;
+	}
 }
 
 /* Participants List Table */

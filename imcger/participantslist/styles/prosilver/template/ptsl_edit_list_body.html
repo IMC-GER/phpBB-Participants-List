@@ -16,19 +16,36 @@
 		<div class="inner">
 			<div class="content">
 				<div id="ptsl-wrap">
-
 					<form method="post" action="{{ U_PTSL_ACTION }}" class="ptsl_form" accept-charset="UTF-8">
-						<label for="username">{{ lang('PTSL_NAME') ~ lang('COLON') }}</label>
-						<input type="text" id="username" name="username" size="30" value="{{ PTSL_USERNAME }}" readonly><br><br>
-
-						<label for="ptsl_number">{{ lang('PTSL_PTS_NUMBER') ~ lang('COLON') }}</label>
-						<input id="ptsl_number" name="ptsl_number" type="number" value="{{ PTSL_NUMBER }}" min="1" max="100"><br><br>
-
-						<div id="ptsl_comment_wrap">
-							<label for="ptsl_comment">{{ lang('PTSL_COMMENT') ~ lang('COLON') }}</label>
-							<textarea id="ptsl_comment" name="ptsl_comment" rows="4" cols="50" maxlength="230">{{ PTSL_COMMENT }}</textarea>
-							<div><span id="ptsl_count_comment"></span></div>
-						</div><br><br>
+						<fieldset>
+							<dl>
+								<dt>
+									<label for="username">{{ lang('PTSL_NAME') ~ lang('COLON') }}</label><br>
+								</dt>
+								<dd>
+									<input type="text" id="username" name="username" size="30" value="{{ PTSL_USERNAME }}" readonly>
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<label for="ptsl_number">{{ lang('PTSL_PTS_NUMBER') ~ lang('COLON') }}</label><br>
+								</dt>
+								<dd>
+									<input id="ptsl_number" name="ptsl_number" type="number" value="{{ PTSL_NUMBER }}" min="1" max="100">
+								</dd>
+							</dl>
+							<dl>
+								<dt>
+									<label for="ptsl_comment">{{ lang('PTSL_COMMENT') ~ lang('COLON') }}</label><br>
+								</dt>
+								<dd>
+									<div id="ptsl_comment_wrap">
+										<textarea id="ptsl_comment" name="ptsl_comment" rows="4" cols="50" maxlength="230">{{ PTSL_COMMENT }}</textarea>
+										<div><span id="ptsl_comment_count"></span></div>
+									</div>
+								</dd>
+							</dl>
+						</fieldset>
 
 						<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">
 
@@ -38,7 +55,6 @@
 						<input type="text" id="user_id" name="user_id" value="{{ PTSL_USER_ID }}" hidden>
 						<input type="text" id="topic_id" name="topic_id" value="{{ PTSL_TOPIC_ID }}" hidden>
 					</form>
-
 				</div>
 			</div>
 		</div>

@@ -11,7 +11,7 @@ function imcgerPtslCountSign(e) {
 	let	imcgerPtslMaxsign = this.getAttribute("maxlength");
 	let	imcgerPtslNewtext = this.value.length + ' / ' + imcgerPtslMaxsign;
 
-	document.getElementById("ptsl_count_comment").innerText = imcgerPtslNewtext;
+	document.getElementById("ptsl_comment_count").innerText = imcgerPtslNewtext;
 }
 
 document.getElementById("ptsl_comment").addEventListener("selectionchange", imcgerPtslCountSign);
