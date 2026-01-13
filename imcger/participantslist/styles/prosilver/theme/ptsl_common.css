@@ -18,7 +18,8 @@
 	width: 25%;
 }
 
-#ptsl-wrap dd {
+#ptsl-wrap dd,
+#ptsl-buttons {
 	margin-left: 26%;
 }
 
@@ -40,7 +41,8 @@
 		width: unset;
 	}
 
-	#ptsl-wrap dd {
+	#ptsl-wrap dd,
+	#ptsl-buttons {
 		margin-left: unset;
 	}
 

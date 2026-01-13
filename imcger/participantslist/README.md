@@ -38,14 +38,16 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
-### v1.1.0-b1 (04-01-2026)
+### v1.1.0 (13-01-2026)
 - Fixed: Incorrect colours in list while using css-class `zebra-list`.
 - Fixed: Sign counter don't count when paste text.
+- Fixed: Don't display special chars in username.
 - Added: Button properties can be changed in css-file.
 - Added: Support for emojis in comment.
 - Added: User Permission “Can see participant list”.
 - Changed: Improved permission check.
 - Changed: Improved db-query for the breadcrumbs menue.
+- Changed: Formatting of the input form optimized.
 
 ### v1.0.0-rc2 (16-12-2025)
 - Fixed: Incorrect permissions have been granted for the role with full access.

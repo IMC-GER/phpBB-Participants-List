@@ -46,8 +46,11 @@
 								</dd>
 							</dl>
 						</fieldset>
-
-						<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">
+						
+						<div id="ptsl-buttons">
+							<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;
+							<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">
+						</div>
 
 						{{ S_FORM_TOKEN }}
 						{{ S_HIDDEN_FIELDS }}
