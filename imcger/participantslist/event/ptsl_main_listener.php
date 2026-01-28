@@ -149,7 +149,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 			$url_list_del	 = $this->helper->route('imcger_participantslist_list_controller', ['process' => 'delete']);
 
 			$sql_array = [
-				'SELECT'    => 'pd.*, u.username',
+				'SELECT'    => 'pd.*, u.username, u.user_colour',
 				'FROM'      => [$this->table_prefix . ext::PTSL_DATA_TABLE => 'pd'],
 				'LEFT_JOIN' => [
 					[
@@ -172,7 +172,8 @@ class ptsl_main_listener implements EventSubscriberInterface
 				$ptsl_table[] = [
 					'PTSL_ID'			=> $row['ptsl_id'],
 					'PTSL_USER_ID'		=> $row['user_id'],
-					'PTSL_USERNAME'		=> htmlspecialchars_decode($row['username'], ENT_QUOTES || ENT_SUBSTITUTE || ENT_HTML5),
+					'PTSL_USERNAME'		=> $row['username'],
+					'PTSL_USERNAME_FULL'=> get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 					'PTSL_NUMBER'		=> $row['ptsl_number'],
 					'PTSL_COMMENT'		=> $comment,
 					'U_PTSL_MOD_EDIT'	=> append_sid($url_list_edit, "t={$topic_id}&amp;id={$row['ptsl_id']}"),

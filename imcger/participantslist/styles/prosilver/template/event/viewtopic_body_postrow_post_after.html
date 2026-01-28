@@ -46,7 +46,7 @@
 						<div class="ptsl-table-tbody">
 						{% for row in ptsl_table %}
 							<div class="ptsl-table-tr bg{{ (loop.index + 1) % 2 + 1 }}">
-								<div class="ptsl-table-td">{{ row.PTSL_USERNAME|e }}</div>
+								<div class="ptsl-table-td">{{ row.PTSL_USERNAME_FULL }}</div>
 								<div class="ptsl-table-td-num">{{ row.PTSL_NUMBER }}</div>
 								<div class="ptsl-table-td">{{ row.PTSL_COMMENT|e }}</div>
 								<div class="ptsl-table-td-button">
