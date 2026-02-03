@@ -1,0 +1,147 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if S_PTSL_CAN_ADD_LIST %}
+<div class="panel bg3" id="ptsl-panel">
+	<div class="inner">
+
+		<h3>{{ lang('PTSL_ADD_PTS_LIST') }}</h3>
+		<p>{{ lang('PTSL_DESCRIPTION') }}</p>
+
+		<fieldset class="fields2">
+			<dl>
+				<dt>
+					<label for="topic_ptsl_disp">{{ lang('PTSL_DISPLAY_LIST') ~ lang('COLON') }}</label>
+				</dt>
+				<dd>
+					<input type="checkbox" name="topic_ptsl_disp" value="1" {{ TOPIC_PTSL_DISP ? ' checked' }}>
+				</dd>
+			</dl>
+			<hr class="solid">
+			<dl>
+				<dt>
+					<label for="ptsl_column_opt1">{{ lang('PTSL_ADD_COLUMN') ~ lang('COLON') }}</label>
+				</dt>
+				<dd>
+					{{ _self.select('ptsl_column_opt1', PTSL_COLUMN_OPT1) }}
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt1" hidden>
+				<dt>
+					<label for="ptsl_column_opt1_name">{{ lang('PTSL_COLUMN_NAME') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_NAME_DESC') }}</span>
+				</dt>
+				<dd>
+					<input type="text" name="ptsl_column_opt1_name" maxlength="10" value="{{ PTSL_COLUMN_OPT1_NAME }}" class="inputbox">
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt1" hidden>
+				<dt>
+					<label for="ptsl_column_opt1_desc">{{ lang('PTSL_COLUMN_DESC') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_DESC_DESC') }}</span>
+				</dt>
+				<dd>
+					<textarea name="ptsl_column_opt1_desc" rows="3" cols="35" class="inputbox">{{ PTSL_COLUMN_OPT1_DESC }}</textarea>
+				</dd>
+			</dl>
+			<hr class="solid">
+			<dl>
+				<dt>
+					<label for="ptsl_column_opt2">{{ lang('PTSL_ADD_COLUMN') ~ lang('COLON') }}</label>
+				</dt>
+				<dd>
+					{{ _self.select('ptsl_column_opt2', PTSL_COLUMN_OPT2) }}
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt2" hidden>
+				<dt>
+					<label for="ptsl_column_opt2_name">{{ lang('PTSL_COLUMN_NAME') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_NAME_DESC') }}</span>
+				</dt>
+				<dd>
+					<input type="text" name="ptsl_column_opt2_name" maxlength="10" value="{{ PTSL_COLUMN_OPT2_NAME }}" class="inputbox">
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt2" hidden>
+				<dt>
+					<label for="ptsl_column_opt2_desc">{{ lang('PTSL_COLUMN_DESC') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_DESC_DESC') }}<span>
+				</dt>
+				<dd>
+					<textarea name="ptsl_column_opt2_desc" rows="3" cols="35" class="inputbox">{{ PTSL_COLUMN_OPT2_DESC }}</textarea>
+				</dd>
+			</dl>
+			<hr class="solid">
+			<dl>
+				<dt>
+					<label for="ptsl_column_opt3">{{ lang('PTSL_ADD_COLUMN') ~ lang('COLON') }}</label>
+				</dt>
+				<dd>
+					{{ _self.select('ptsl_column_opt3', PTSL_COLUMN_OPT3) }}
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt3" hidden>
+				<dt>
+					<label for="ptsl_column_opt3_name">{{ lang('PTSL_COLUMN_NAME') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_NAME_DESC') }}</span>
+				</dt>
+				<dd>
+					<input type="text" name="ptsl_column_opt3_name" maxlength="10" value="{{ PTSL_COLUMN_OPT3_NAME }}" class="inputbox">
+				</dd>
+			</dl>
+			<dl class="ptsl_column_opt3" hidden>
+				<dt>
+					<label for="ptsl_column_opt3_desc">>{{ lang('PTSL_COLUMN_DESC') ~ lang('COLON') }}</label><br>
+					<span>{{ lang('PTSL_COLUMN_DESC_DESC') }}</span>
+				</dt>
+				<dd>
+					<textarea name="ptsl_column_opt3_desc" rows="3" cols="35" class="inputbox">{{ PTSL_COLUMN_OPT3_DESC }}</textarea>
+				</dd>
+			</dl>
+		</fieldset>
+	</div>
+</div>
+
+<script>
+
+	function ptslColumnOpt(elem) {
+		if (elem.value == 0) {
+			document.getElementsByClassName(elem.name)[0].hidden = true;
+			document.getElementsByClassName(elem.name)[1].hidden = true;
+		} else {
+			document.getElementsByClassName(elem.name)[0].hidden = false;
+			document.getElementsByClassName(elem.name)[1].hidden = false;
+		}
+	}
+
+	document.getElementsByName('ptsl_column_opt1')[0].addEventListener('change', (event) => { ptslColumnOpt(event.target)});
+	document.getElementsByName('ptsl_column_opt2')[0].addEventListener('change', (event) => { ptslColumnOpt(event.target)});
+	document.getElementsByName('ptsl_column_opt3')[0].addEventListener('change', (event) => { ptslColumnOpt(event.target)});
+
+	// Trigger change event on page load
+	document.getElementsByName('ptsl_column_opt1')[0].dispatchEvent(new Event('change'));
+	document.getElementsByName('ptsl_column_opt2')[0].dispatchEvent(new Event('change'));
+	document.getElementsByName('ptsl_column_opt3')[0].dispatchEvent(new Event('change'));
+
+</script>
+
+{% macro select(name, options, multiple = null, size = null) -%}
+	<select name="{{ name }}{{ multiple ? '[]' }}"{{
+		(size !== null ? ' size="' ~ size ~ '"') ~
+		(multiple ? ' multiple')
+	}}>
+		{% for opt in options %}
+			<option value="{{ opt.value }}"{{
+				(opt.bold ? ' class="sep"') ~
+				(opt.selected ? ' selected')
+			}}>{{ lang(opt.label) }}</option>
+		{% endfor %}
+	</select>
+{%- endmacro %}
+{% endif %}

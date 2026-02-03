@@ -34,6 +34,51 @@
 									<input id="ptsl_number" name="ptsl_number" type="number" value="{{ PTSL_NUMBER }}" min="1" max="100">
 								</dd>
 							</dl>
+							{% if PTSL_COLUMN_OPT1 %}
+								<dl>
+									<dt>
+										<label for="ptsl_opt1">{{ PTSL_COLUMN_OPT1_NAME ~ lang('COLON') }}</label><br>
+										<span>{{ PTSL_COLUMN_OPT1_DESC }}</span>
+									</dt>
+									<dd>
+									{% if PTSL_COLUMN_OPT1 == 2 %}
+										<input name="ptsl_opt1" type="number" value="{{ PTSL_OPT1 }}" min="0" max="100">
+									{% else %}
+										<input name="ptsl_opt1" type="checkbox" value="1"{{ PTSL_OPT1 ? ' checked' }}>
+									{% endif %}
+									</dd>
+								</dl>
+							{% endif %}
+							{% if PTSL_COLUMN_OPT2 %}
+								<dl>
+									<dt>
+										<label for="ptsl_opt2">{{ PTSL_COLUMN_OPT2_NAME ~ lang('COLON') }}</label><br>
+										<span>{{ PTSL_COLUMN_OPT2_DESC }}</span>
+									</dt>
+									<dd>
+									{% if PTSL_COLUMN_OPT2 == 2 %}
+										<input name="ptsl_opt2" type="number" value="{{ PTSL_OPT2 }}" min="0" max="100">
+									{% else %}
+										<input name="ptsl_opt2" type="checkbox" value="1"{{ PTSL_OPT2 ? ' checked' }}>
+									{% endif %}
+									</dd>
+								</dl>
+							{% endif %}
+							{% if PTSL_COLUMN_OPT3 %}
+								<dl>
+									<dt>
+										<label for="ptsl_opt3">{{ PTSL_COLUMN_OPT3_NAME ~ lang('COLON') }}</label><br>
+										<span>{{ PTSL_COLUMN_OPT3_DESC }}</span>
+									</dt>
+									<dd>
+									{% if PTSL_COLUMN_OPT3 == 2 %}
+										<input name="ptsl_opt3" type="number" value="{{ PTSL_OPT3 }}" min="0" max="100">
+									{% else %}
+										<input name="ptsl_opt3" type="checkbox" value="1"{{ PTSL_OPT3 ? ' checked' }}>
+									{% endif %}
+									</dd>
+								</dl>
+							{% endif %}
 							<dl>
 								<dt>
 									<label for="ptsl_comment">{{ lang('PTSL_COMMENT') ~ lang('COLON') }}</label><br>
@@ -46,7 +91,7 @@
 								</dd>
 							</dl>
 						</fieldset>
-						
+
 						<div id="ptsl-buttons">
 							<input class="button1" type="submit" name="submit" value="{{ lang('PTSL_SAVE') }}">&nbsp;&nbsp;
 							<input class="button2" type="submit" name="cancel" value="{{ lang('CANCEL') }}">

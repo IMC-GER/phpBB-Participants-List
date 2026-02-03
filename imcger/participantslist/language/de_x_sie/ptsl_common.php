@@ -40,6 +40,7 @@ $lang = array_merge($lang, [
 	'PTSL_PTS_NUMBER_SHORT'		=> 'TN',
 	'PTSL_PTS_NUMBER'			=> 'Anzahl der Teilnehmer',
 	'PTSL_COMMENT'				=> 'Bemerkung',
+	'PTSL_PTS_SUM'				=> 'Summe',
 	'PTSL_PTS_SUM_STRING'		=> 'Es haben sich %1$d Teilnehmer angemeldet.',
 	'PTSL_CONFIRMBOX_TEXT'		=> 'Sind sie sich sicher das sie diesen Eintrag löschen möchten.<br><b>Die Löschung kann nicht rückgänig gemacht werden.</b>',
 	'PTSL_HAS_NO_PERMISSION'	=> 'Sie haben keine Berechtigung, diese Aktion auszuführen.',
@@ -53,4 +54,14 @@ $lang = array_merge($lang, [
 	'PTSL_GO_TO_LIST'			=> 'Zur Teilnehmerliste',
 
 	'PTSL_ADD_PTS_LIST'			=> 'Teilnehmerliste hinzufügen',
+	'PTSL_DESCRIPTION'			=> 'Sie Können zu diesem Thema eine Teilnehmerliste hinzufügen. Optional können sie bis zu drei zusätzliche Spalten hinzufügen. Bei diesen können sie festlegen, ob im Registrierungsformular ein numerisches Feld oder eine Checkbox angezeigt wird.',
+	'PTSL_DISPLAY_LIST'			=> 'Teilnehmerliste aktivieren',
+	'PTSL_ADD_COLUMN'			=> 'Spalte hinzufügen',
+	'PTSL_COLUMN_NAME'			=> 'Spaltenname',
+	'PTSL_COLUMN_NAME_DESC'		=> 'Bezeichnung der Spalte in der Teilnehmerliste. Maximal 10 Zeichen.',
+	'PTSL_COLUMN_DESC'			=> 'Spalten Beschreibung',
+	'PTSL_COLUMN_DESC_DESC'		=> 'Erklärung zu den Eintrag in der Spalte.',
+	'PTSL_NONE'					=> 'Keine',
+	'PTSL_CHECKBOX'				=> 'Checkbox',
+	'PTSL_NUMBERS'				=> 'Numerischer Wert',
 ]);

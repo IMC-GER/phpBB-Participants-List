@@ -39,7 +39,16 @@
 							<div class="ptsl-table-tr">
 								<div class="ptsl-table-td">{{ lang('PTSL_NAME') }}</div>
 								<div class="ptsl-table-td-num">{{ lang('PTSL_PTS_NUMBER_SHORT') }}</div>
-								<div class="ptsl-table-td">{{ lang('PTSL_COMMENT') }}</div>
+								{% if PTSL_COLUMN_OPT1 %}
+									<div class="ptsl-table-td-num">{{ PTSL_COLUMN_OPT1_NAME }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT2 %}
+									<div class="ptsl-table-td-num">{{ PTSL_COLUMN_OPT2_NAME }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT3 %}
+									<div class="ptsl-table-td-num">{{ PTSL_COLUMN_OPT3_NAME }}</div>
+								{% endif %}
+								<div class="ptsl-table-td ptsl-table-td-comment">{{ lang('PTSL_COMMENT') }}</div>
 								<div class="ptsl-table-td-button"></div>
 							</div>
 						</div>
@@ -48,7 +57,16 @@
 							<div class="ptsl-table-tr bg{{ (loop.index + 1) % 2 + 1 }}">
 								<div class="ptsl-table-td">{{ row.PTSL_USERNAME_FULL }}</div>
 								<div class="ptsl-table-td-num">{{ row.PTSL_NUMBER }}</div>
-								<div class="ptsl-table-td">{{ row.PTSL_COMMENT|e }}</div>
+								{% if PTSL_COLUMN_OPT1 %}
+									<div class="ptsl-table-td-num">{{ row.PTSL_OPT1 }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT2 %}
+									<div class="ptsl-table-td-num">{{ row.PTSL_OPT2 }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT3 %}
+									<div class="ptsl-table-td-num">{{ row.PTSL_OPT3 }}</div>
+								{% endif %}
+								<div class="ptsl-table-td ptsl-table-td-comment">{{ row.PTSL_COMMENT }}</div>
 								<div class="ptsl-table-td-button">
 								{% if S_PTSL_M_EDIT %}
 									<a href="{{ row.U_PTSL_MOD_EDIT }}" title="{{ lang('PTSL_EDIT_LIST') }}" class="button button-icon-only">
@@ -64,10 +82,31 @@
 							</div>
 						{% endfor %}
 						</div>
+						{% if PTSL_NUMBER_OPT_DISP %}
+						<div class="ptsl-table-tfooter">
+							<div class="ptsl-table-tr">
+								<div class="ptsl-table-td">{{ lang('PTSL_PTS_SUM') }}</div>
+								<div class="ptsl-table-td-num">{{ PTSL_NUMBER_PTS }}</div>
+								{% if PTSL_COLUMN_OPT1 %}
+									<div class="ptsl-table-td-num">{{ PTSL_NUMBER_OPT1 }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT2 %}
+									<div class="ptsl-table-td-num">{{ PTSL_NUMBER_OPT2 }}</div>
+								{% endif %}
+								{% if PTSL_COLUMN_OPT3 %}
+									<div class="ptsl-table-td-num">{{ PTSL_NUMBER_OPT3 }}</div>
+								{% endif %}
+								<div class="ptsl-table-td"> </div>
+								<div class="ptsl-table-td-button"> </div>
+							</div>
+						</div>
+						{% endif %}
 					</div>
 				{% endif %}
 				</div>
-				<div id="ptsl-sum-text">{{ lang('PTSL_PTS_SUM_STRING', PTSL_NUMBER_SUM) }}</div>
+				{% if not PTSL_NUMBER_OPT_DISP %}
+					<div id="ptsl-sum-text">{{ lang('PTSL_PTS_SUM_STRING', PTSL_NUMBER_PTS) }}</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
