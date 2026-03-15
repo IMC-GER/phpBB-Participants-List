@@ -4,7 +4,7 @@
     "description": "This extension change the linear progress bar to a radial progress bar.",
     "homepage": "https://github.com/IMC-GER/phpBB-Participants-List/",
     "version": "1.3.0-dev",
-    "time": "2026-02-03",
+    "time": "2026-03-15",
     "keywords": ["phpbb", "extension", "participantslist"],
     "license": "GPL-2.0-only",
     "authors": [

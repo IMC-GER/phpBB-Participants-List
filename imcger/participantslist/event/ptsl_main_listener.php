@@ -15,7 +15,8 @@ use imcger\participantslist\ext;
 
 class ptsl_main_listener implements EventSubscriberInterface
 {
-	private string $post_delete_conditions;
+	private	  string $post_delete_conditions;
+	protected string $sortby;
 
 	public function __construct
 	(
@@ -32,6 +33,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 	)
 	{
 		$this->post_delete_conditions = 0;
+		$this->sort_dir = $this->request->variable('ptsl-sd', '');
 	}
 
 	/**
@@ -259,12 +261,29 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'WHERE'     => 'pd.topic_id = ' . (int) $topic_id,
 			];
 
+			$query_string = $this->user->page['query_string'];
+			parse_str($query_string, $query_para);
+
+			// Set default sort direction
+			$alter_query_para = array_merge($query_para, ['u' => $user_id]);
+			$sort_query_para  = array_merge($query_para, ['ptsl-sd' => 'a']);
+
+			if ($this->sort_dir == 'a')
+			{
+				$sql_array += ['ORDER_BY'  => 'u.username_clean ASC'];
+				$sort_query_para['ptsl-sd'] = 'd';
+			}
+			else if ($this->sort_dir == 'd')
+			{
+				$sql_array += ['ORDER_BY'  => 'u.username_clean DESC'];
+				$sort_query_para['ptsl-sd'] = 'a';
+			}
+
 			$sql    = $this->db->sql_build_query('SELECT', $sql_array);
 			$result = $this->db->sql_query($sql);
 
 			$ptsl_table = [];
 			$flags		= OPTION_FLAG_BBCODE + OPTION_FLAG_SMILIES;
-
 
 			while ($row = $this->db->sql_fetchrow())
 			{
@@ -319,15 +338,17 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_data['ptsl_column_opt1_name'],
 				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_data['ptsl_column_opt2_name'],
 				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_data['ptsl_column_opt3_name'],
+				'PTSL_SORT_DIRECTION'	=> $alter_query_para['ptsl-sd'] ?? '' ,
 				'S_PTSL_GO_TO_LIST'		=> true,
 				'S_PTSL_CAN_VIEW_LIST'	=> $ptsl_u_view,
 				'S_PTSL_M_EDIT'			=> $ptsl_m_edit,
 				'S_PTSL_M_DELETE'		=> $ptsl_m_delete,
 				'S_PTSL_USER_IN_LIST'	=> $user_inlist,
-				'U_PTSL_GO_TO_LIST'		=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$topic_id}#ptsl-anchor"),
-				'U_PTSL_ADD_TO_LIST'	=> append_sid($url_list_add, "t={$topic_id}&amp;u={$user_id}"),
-				'U_PTSL_EDIT_LIST'		=> append_sid($url_list_edit, "t={$topic_id}&amp;u={$user_id}"),
-				'U_PTSL_DEL_FROM_LIST'	=> append_sid($url_list_del, "t={$topic_id}&amp;u={$user_id}"),
+				'U_PTSL_GO_TO_LIST'		=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, $query_para) . '#ptsl-anchor',
+				'U_PTSL_SORT_BY_NAME'	=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, $sort_query_para) . '#ptsl-anchor',
+				'U_PTSL_ADD_TO_LIST'	=> append_sid($url_list_add, $alter_query_para),
+				'U_PTSL_EDIT_LIST'		=> append_sid($url_list_edit, $alter_query_para),
+				'U_PTSL_DEL_FROM_LIST'	=> append_sid($url_list_del, $alter_query_para),
 			]);
 		}
 	}

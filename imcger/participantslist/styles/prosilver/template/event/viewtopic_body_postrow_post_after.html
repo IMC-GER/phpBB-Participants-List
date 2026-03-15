@@ -37,7 +37,13 @@
 					<div class="ptsl-table">
 						<div class="ptsl-table-thead">
 							<div class="ptsl-table-tr">
-								<div class="ptsl-table-td">{{ lang('PTSL_NAME') }}</div>
+								<div class="ptsl-table-td">
+									<a href="{{ U_PTSL_SORT_BY_NAME }}">{{ lang('PTSL_NAME') }}
+										{{ [!PTSL_SORT_DIRECTION ? '',
+											 PTSL_SORT_DIRECTION == 'a' ? '<i class="icon fa-sort-alpha-asc fa-fw" aria-hidden="true"></i>',
+											 PTSL_SORT_DIRECTION == 'd' ? '<i class="icon fa-sort-alpha-desc fa-fw" aria-hidden="true"></i>']|join }}
+									</a>
+								</div>
 								<div class="ptsl-table-td-num">{{ lang('PTSL_PTS_NUMBER_SHORT') }}</div>
 								{% if PTSL_COLUMN_OPT1 %}
 									<div class="ptsl-table-td-num">{{ PTSL_COLUMN_OPT1_NAME }}</div>
