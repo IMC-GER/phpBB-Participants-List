@@ -112,16 +112,16 @@ class ptsl_main_listener implements EventSubscriberInterface
 		if ($event['post_data']['ptsl_can_add_list'])
 		{
 			$post_data = $event['post_data'];
-			$post_data['topic_ptsl_disp']		= $this->request->variable('topic_ptsl_disp', 0);
-			$post_data['ptsl_column_opt1']		= $this->request->variable('ptsl_column_opt1', 0);
-			$post_data['ptsl_column_opt2']		= $this->request->variable('ptsl_column_opt2', 0);
-			$post_data['ptsl_column_opt3']		= $this->request->variable('ptsl_column_opt3', 0);
-			$post_data['ptsl_column_opt1_name'] = $this->request->variable('ptsl_column_opt1_name', '', true);
-			$post_data['ptsl_column_opt2_name'] = $this->request->variable('ptsl_column_opt2_name', '', true);
-			$post_data['ptsl_column_opt3_name'] = $this->request->variable('ptsl_column_opt3_name', '', true);
-			$post_data['ptsl_column_opt1_desc'] = $this->request->variable('ptsl_column_opt1_desc', '', true);
-			$post_data['ptsl_column_opt2_desc'] = $this->request->variable('ptsl_column_opt2_desc', '', true);
-			$post_data['ptsl_column_opt3_desc'] = $this->request->variable('ptsl_column_opt3_desc', '', true);
+			$post_data['topic_ptsl_disp']		= (int) $this->request->variable('topic_ptsl_disp', 0);
+			$post_data['ptsl_column_opt1']		= (int) $this->request->variable('ptsl_column_opt1', 0);
+			$post_data['ptsl_column_opt2']		= (int) $this->request->variable('ptsl_column_opt2', 0);
+			$post_data['ptsl_column_opt3']		= (int) $this->request->variable('ptsl_column_opt3', 0);
+			$post_data['ptsl_column_opt1_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt1_name', '', true));
+			$post_data['ptsl_column_opt2_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt2_name', '', true));
+			$post_data['ptsl_column_opt3_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt3_name', '', true));
+			$post_data['ptsl_column_opt1_desc'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt1_desc', '', true));
+			$post_data['ptsl_column_opt2_desc'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt2_desc', '', true));
+			$post_data['ptsl_column_opt3_desc'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt3_desc', '', true));
 			$event['post_data'] = $post_data;
 		}
 	}

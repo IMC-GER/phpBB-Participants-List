@@ -35,9 +35,9 @@ class ptsl_list_controller
 		protected string $table_prefix,
 	)
 	{
-		$this->topic_id	= $this->request->variable('t', 0);
-		$this->user_id	= $this->request->variable('u', 0);
-		$this->ptsl_id	= $this->request->variable('id', 0);
+		$this->topic_id	= (int) $this->request->variable('t', 0);
+		$this->user_id	= (int) $this->request->variable('u', 0);
+		$this->ptsl_id	= (int) $this->request->variable('id', 0);
 	}
 
 	/**
@@ -90,12 +90,12 @@ class ptsl_list_controller
 					$data['bbcode_bitfield'] = $bitfield;
 					$data['bbcode_uid']		 = $uid;
 					$data['ptsl_comment']	 = $comment;
-					$data['user_id']		 = $this->request->variable('user_id', 0);
-					$data['topic_id']	 	 = $this->request->variable('topic_id', 0);
-					$data['ptsl_number'] 	 = $this->request->variable('ptsl_number', 1);
-					$data['ptsl_opt1'] 		 = $this->request->variable('ptsl_opt1', 0);
-					$data['ptsl_opt2'] 		 = $this->request->variable('ptsl_opt2', 0);
-					$data['ptsl_opt3'] 		 = $this->request->variable('ptsl_opt3', 0);
+					$data['user_id']		 = (int) $this->request->variable('user_id', 0);
+					$data['topic_id']	 	 = (int) $this->request->variable('topic_id', 0);
+					$data['ptsl_number'] 	 = (int) $this->request->variable('ptsl_number', 1);
+					$data['ptsl_opt1'] 		 = (int) $this->request->variable('ptsl_opt1', 0);
+					$data['ptsl_opt2'] 		 = (int) $this->request->variable('ptsl_opt2', 0);
+					$data['ptsl_opt3'] 		 = (int) $this->request->variable('ptsl_opt3', 0);
 
 					$this->check_permission($process, $this->get_list_data($process, $data['user_id'], $data['topic_id']));
 
