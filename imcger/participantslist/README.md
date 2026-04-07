@@ -38,6 +38,13 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
+### v1.3.0 (07-04-2026)
+- Fixed: Improved protection against SQL injection
+- Added: Three optional columns added
+- Added: Can sort the list by name
+- Changed: Create table with div elements
+- Changed: Display full username in list (colour & profile link)
+
 ### v1.1.0 (13-01-2026)
 - Fixed: Incorrect colours in list while using css-class `zebra-list`.
 - Fixed: Sign counter don't count when paste text.

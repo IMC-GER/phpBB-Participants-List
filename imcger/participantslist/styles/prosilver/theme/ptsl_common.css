@@ -23,11 +23,11 @@
 	margin-left: 26%;
 }
 
-#ptsl_comment_wrap {
+#ptsl-comment-wrap {
 	max-width: 95%;
 }
 
-#ptsl_comment_wrap textarea {
+#ptsl-comment-wrap textarea {
 	width: calc(100% - 8px);
 }
 
@@ -46,68 +46,93 @@
 		margin-left: unset;
 	}
 
-	#ptsl_comment_wrap textarea {
+	#ptsl-comment-wrap textarea {
 		width: 100%;
 	}
 }
 
 /* Participants List Table */
-#ptsl_anchor {
-	margin-bottom: 1.4em;
+.ptsl-table {
+	display: table;
+	width: 100%;
 }
 
-#ptsl_anchor .postbody {
-	width: 100%
+.ptsl-table-thead {
+	display: table-header-group;
+	font-weight: bold;
+}
+
+.ptsl-table-tbody {
+	display: table-row-group;
+}
+
+.ptsl-table-tfooter {
+	display: table-footer-group;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.ptsl-table-tr {
+	display: table-row;
+}
+
+.ptsl-table-thead .ptsl-table-tr:last-of-type [class^="ptsl-table-td"],
+.ptsl-table-tbody .ptsl-table-tr:last-of-type [class^="ptsl-table-td"] {
+	border-bottom: 1px solid #ccc;
+}
+
+.ptsl-table-tfooter .ptsl-table-tr:last-of-type [class^="ptsl-table-td"]:nth-last-child(n + 3) {
+	border-bottom: 3px double #ccc;
+}
+
+.ptsl-table-tbody .ptsl-table-tr:hover {
+	background-color: #CADCEB;
+}
+
+[class^="ptsl-table-td"] {
+	display: table-cell;
+	padding: 6px;
+	vertical-align: middle;
+}
+
+.ptsl-table-td:nth-child(1),
+.ptsl-table-td-num,
+.ptsl-table-td-button {
+	width: 1%;
+	white-space: nowrap;
+}
+
+.ptsl-table-td-comment {
+	width: 100%;
+}
+
+.ptsl-table-td-num {
+	text-align: center;
+}
+
+.ptsl-table-td-button {
+	text-align: right;
+}
+
+@media (max-width: 700px) {
+	.ptsl-table-thead .ptsl-table-td-num {
+		writing-mode: sideways-lr;
+	}
+}
+
+/* Participants List content */
+#ptsl-anchor {
+	margin-bottom: 1.4em;
+	padding-bottom: 1.3em;
+}
+
+#ptsl-anchor .postbody {
+	width: 100%;
 }
 
 #ptsl-sum-text {
 	font-size: 1.2em;
 	line-height: 2em;
-}
-
-#ptsl-table table {
-	margin: left;
-	line-height: 1.4em;
-}
-
-#ptsl-table table thead {
-	font-size: 1.1em;
-}
-
-#ptsl-table table td,
-#ptsl-table table th {
-	padding: 0.5em 0.3em;
-	text-align: left;
-}
-
-#ptsl-table table thead th {
-	text-align: left;
-}
-
-#ptsl-table table tbody {
-	border-top: black 1px solid;
-	border-bottom: black 1px solid;
-}
-
-#ptsl-table table tbody tr:hover td {
-	background-color: #CADCEB; /* Here can you change the colour for the mouse over effect */
-}
-
-#ptsl-table table td:nth-child(2) {
-	text-align: center;
-}
-
-#ptsl-table table th:nth-child(3) {
-	width: 100%;
-}
-
-#ptsl-table table td:nth-child(3) {
-	width: 100%;
-	word-break: break-word;
-}
-
-#ptsl-table table tbody td:last-child {
-	white-space: nowrap;
 }
 
 /* Participants List buttons in title line */

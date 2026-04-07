@@ -40,6 +40,7 @@ $lang = array_merge($lang, [
 	'PTSL_PTS_NUMBER_SHORT'		=> 'Pts.',
 	'PTSL_PTS_NUMBER'			=> 'Number of participants',
 	'PTSL_COMMENT'				=> 'Comment',
+	'PTSL_PTS_SUM'				=> 'Total',
 	'PTSL_PTS_SUM_STRING'		=> '%1$d participants have registered.',
 	'PTSL_CONFIRMBOX_TEXT'		=> 'Are you sure you want to delete this entry?<br><b>The deletion cannot be undone.</b>',
 	'PTSL_HAS_NO_PERMISSION'	=> 'You do not have permission to perform this action.',
@@ -53,4 +54,14 @@ $lang = array_merge($lang, [
 	'PTSL_GO_TO_LIST'			=> 'Go to the participants list',
 
 	'PTSL_ADD_PTS_LIST'			=> 'Add participant list',
+	'PTSL_DESCRIPTION'			=> 'You can add a participant list for this topic. Optionally, you can add up to three additional columns. For these, you can specify whether a numeric field or a checkbox is displayed in the registration form.',
+	'PTSL_DISPLAY_LIST'			=> 'Activate participant list',
+	'PTSL_ADD_COLUMN'			=> 'Add column',
+	'PTSL_COLUMN_NAME'			=> 'Column name',
+	'PTSL_COLUMN_NAME_DESC'		=> 'Name of the column in the participant list. Maximum 10 characters.',
+	'PTSL_COLUMN_DESC'			=> 'Column description',
+	'PTSL_COLUMN_DESC_DESC'		=> 'Explanation of the entries in the column.',
+	'PTSL_NONE'					=> 'None',
+	'PTSL_CHECKBOX'				=> 'Checkbox',
+	'PTSL_NUMBERS'				=> 'Numerical value',
 ]);

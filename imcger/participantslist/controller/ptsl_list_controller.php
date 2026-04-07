@@ -35,9 +35,9 @@ class ptsl_list_controller
 		protected string $table_prefix,
 	)
 	{
-		$this->topic_id	= $this->request->variable('t', 0);
-		$this->user_id	= $this->request->variable('u', 0);
-		$this->ptsl_id	= $this->request->variable('id', 0);
+		$this->topic_id	= (int) $this->request->variable('t', 0);
+		$this->user_id	= (int) $this->request->variable('u', 0);
+		$this->ptsl_id	= (int) $this->request->variable('id', 0);
 	}
 
 	/**
@@ -77,10 +77,9 @@ class ptsl_list_controller
 
 					$comment  = $this->db->sql_escape(censor_text($this->request->variable('ptsl_comment', '', true)));
 					$comment  = str_replace("\\n", " ", $comment);
-					$bitfield = $uid = '';
-					$flags	  = 0;
+					$bitfield = $uid = $flags = '';
 
-					$warn_msg = generate_text_for_storage($comment, $uid, $bitfield, $flags, false, false, false, false, false, false, false, 'post');
+					$warn_msg = generate_text_for_storage($comment, $uid, $bitfield, $flags, true, false, true, false, false, false, false, 'post');
 
 					if (count($warn_msg))
 					{
@@ -91,9 +90,12 @@ class ptsl_list_controller
 					$data['bbcode_bitfield'] = $bitfield;
 					$data['bbcode_uid']		 = $uid;
 					$data['ptsl_comment']	 = $comment;
-					$data['user_id']		 = $this->request->variable('user_id', 0);
-					$data['topic_id']	 	 = $this->request->variable('topic_id', 0);
-					$data['ptsl_number'] 	 = $this->request->variable('ptsl_number', 1);
+					$data['user_id']		 = (int) $this->request->variable('user_id', 0);
+					$data['topic_id']	 	 = (int) $this->request->variable('topic_id', 0);
+					$data['ptsl_number'] 	 = (int) $this->request->variable('ptsl_number', 1);
+					$data['ptsl_opt1'] 		 = (int) $this->request->variable('ptsl_opt1', 0);
+					$data['ptsl_opt2'] 		 = (int) $this->request->variable('ptsl_opt2', 0);
+					$data['ptsl_opt3'] 		 = (int) $this->request->variable('ptsl_opt3', 0);
 
 					$this->check_permission($process, $this->get_list_data($process, $data['user_id'], $data['topic_id']));
 
@@ -116,7 +118,8 @@ class ptsl_list_controller
 
 					if ($process == 'edit')
 					{
-						$comment = generate_text_for_edit($data['ptsl_comment'], $data['bbcode_uid'], 0)['text'];
+						$flags	 = OPTION_FLAG_BBCODE + OPTION_FLAG_SMILIES;
+						$comment = generate_text_for_edit($data['ptsl_comment'], $data['bbcode_uid'], $flags)['text'];
 					}
 
 					$this->template->assign_vars([
@@ -127,6 +130,18 @@ class ptsl_list_controller
 						'PTSL_USERNAME'		=> $data['username'] ?? '',
 						'PTSL_NUMBER'		=> $data['ptsl_number'] ?? 1,
 						'PTSL_COMMENT'		=> $comment ?? '',
+						'PTSL_OPT1'				=> $data['ptsl_opt1'] ?? 0,
+						'PTSL_COLUMN_OPT1'		=> $data['ptsl_column_opt1'] ?? 0,
+						'PTSL_COLUMN_OPT1_NAME'	=> $data['ptsl_column_opt1_name'] ?? '',
+						'PTSL_COLUMN_OPT1_DESC'	=> $data['ptsl_column_opt1_desc'] ?? '',
+						'PTSL_OPT2'				=> $data['ptsl_opt2'] ?? 0,
+						'PTSL_COLUMN_OPT2'		=> $data['ptsl_column_opt2'] ?? 0,
+						'PTSL_COLUMN_OPT2_NAME'	=> $data['ptsl_column_opt2_name'] ?? '',
+						'PTSL_COLUMN_OPT2_DESC'	=> $data['ptsl_column_opt2_desc'] ?? '',
+						'PTSL_OPT3'				=> $data['ptsl_opt3'] ?? 0,
+						'PTSL_COLUMN_OPT3'		=> $data['ptsl_column_opt3'] ?? 0,
+						'PTSL_COLUMN_OPT3_NAME'	=> $data['ptsl_column_opt3_name'] ?? '',
+						'PTSL_COLUMN_OPT3_DESC'	=> $data['ptsl_column_opt3_desc'] ?? '',
 					]);
 
 					$this->set_breadcrumb($data);
@@ -195,7 +210,7 @@ class ptsl_list_controller
 		$sql_array = [];
 
 		$sql_array['edit'] = [
-			'SELECT'    => 'pd.*, u.username, t.topic_id, t.topic_title, t.forum_id',
+			'SELECT'    => 'pd.*, pt.*, u.username, t.topic_id, t.topic_title, t.forum_id',
 			'FROM'      => [$this->table_prefix . ext::PTSL_DATA_TABLE => 'pd'],
 			'LEFT_JOIN' => [
 				[
@@ -204,7 +219,11 @@ class ptsl_list_controller
 				],
 				[
 					'FROM' => [TOPICS_TABLE => 't'],
-					'ON'   => 'pd.topic_id = t.topic_id',
+					'ON'   => 't.topic_id = ' . (int) $topic_id,
+				],
+				[
+					'FROM' => [$this->table_prefix . ext::PTSL_TABLE_DATA_TABLE => 'pt'],
+					'ON'   => 'pt.topic_id = ' . (int) $topic_id,
 				],
 			],
 			'WHERE'     => 'pd.topic_id = ' . (int) $topic_id . '
@@ -213,12 +232,16 @@ class ptsl_list_controller
 		];
 
 		$sql_array['add'] = [
-			'SELECT'    => 'u.user_id, u.username, t.topic_id, t.topic_title, t.forum_id',
+			'SELECT'    => 'pt.*, u.user_id, u.username, t.topic_id, t.topic_title, t.forum_id',
 			'FROM'      => [USERS_TABLE => 'u'],
 			'LEFT_JOIN' => [
 				[
 					'FROM' => [TOPICS_TABLE => 't'],
 					'ON'   => 't.topic_id = ' . (int) $topic_id,
+				],
+				[
+					'FROM' => [$this->table_prefix . ext::PTSL_TABLE_DATA_TABLE => 'pt'],
+					'ON'   => 'pt.topic_id = ' . (int) $topic_id,
 				],
 			],
 			'WHERE'     => 'u.user_id = ' . (int) $user_id,

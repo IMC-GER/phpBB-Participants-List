@@ -8,7 +8,7 @@
  #}
 
 {% if S_PTSL_CAN_ADD_LIST %}
-	<div><label for="topic_ptsl_disp">
-		<input type="checkbox" name="topic_ptsl_disp" id="topic_ptsl_disp" {% if TOPIC_PTSL_DISP %} checked {% endif %}> {{ lang('PTSL_ADD_PTS_LIST') }}</label>
-	</div>
+	<li id="ptsl-panel-tab" class="tab">
+		<a href="#tabs" data-subpanel="ptsl-panel" role="tab" aria-controls="ptsp-panel">Teiln. Liste</a>
+	</li>
 {% endif %}
