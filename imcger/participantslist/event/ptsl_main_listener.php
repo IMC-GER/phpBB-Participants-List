@@ -265,6 +265,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 			parse_str($query_string, $query_para);
 
 			// Set default sort direction
+			$query_para['t']  = $topic_id;
 			$alter_query_para = array_merge($query_para, ['u' => $user_id]);
 			$sort_query_para  = array_merge($query_para, ['ptsl-sd' => 'a']);
 
@@ -323,6 +324,13 @@ class ptsl_main_listener implements EventSubscriberInterface
 			$ptsl_data	= $this->db->sql_fetchrow($result);
 			$this->db->sql_freeresult($result);
 
+			if ($ptsl_data)
+			{
+				$this->template->assign_vars([
+					'PTSL_NUMBER_OPT_DISP'	=> $ptsl_data['ptsl_column_opt1'] || $ptsl_data['ptsl_column_opt2'] || $ptsl_data['ptsl_column_opt3'],
+				]);
+			}
+
 			$this->template->assign_vars([
 				'ptsl_table'			=> $ptsl_table,
 				'PTSL_TOPIC_ID'			=> $topic_id,
@@ -330,14 +338,13 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'PTSL_NUMBER_OPT1'		=> $ptsl_number_opt1,
 				'PTSL_NUMBER_OPT2'		=> $ptsl_number_opt2,
 				'PTSL_NUMBER_OPT3'		=> $ptsl_number_opt3,
-				'PTSL_NUMBER_OPT_DISP'	=> $ptsl_data['ptsl_column_opt1'] || $ptsl_data['ptsl_column_opt2'] || $ptsl_data['ptsl_column_opt3'],
 				'PTSL_USERNAME'			=> $this->user->data['username'],
-				'PTSL_COLUMN_OPT1'		=> $ptsl_data['ptsl_column_opt1'],
-				'PTSL_COLUMN_OPT2'		=> $ptsl_data['ptsl_column_opt2'],
-				'PTSL_COLUMN_OPT3'		=> $ptsl_data['ptsl_column_opt3'],
-				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_data['ptsl_column_opt1_name'],
-				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_data['ptsl_column_opt2_name'],
-				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_data['ptsl_column_opt3_name'],
+				'PTSL_COLUMN_OPT1'		=> $ptsl_data['ptsl_column_opt1'] ?? 0,
+				'PTSL_COLUMN_OPT2'		=> $ptsl_data['ptsl_column_opt2'] ?? 0,
+				'PTSL_COLUMN_OPT3'		=> $ptsl_data['ptsl_column_opt3'] ?? 0,
+				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_data['ptsl_column_opt1_name'] ?? '',
+				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_data['ptsl_column_opt2_name'] ?? '',
+				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_data['ptsl_column_opt3_name'] ?? '',
 				'PTSL_SORT_DIRECTION'	=> $alter_query_para['ptsl-sd'] ?? '' ,
 				'S_PTSL_GO_TO_LIST'		=> true,
 				'S_PTSL_CAN_VIEW_LIST'	=> $ptsl_u_view,

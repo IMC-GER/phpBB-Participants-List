@@ -38,6 +38,11 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
+### v1.3.1 (09-04-2026)
+- Fixed: Missing language variable in template
+- Fixed: Missing GET parameter ‘t’ when the first post in the topic is accessed directly
+- Fixed: PHP Warning when data table is empty
+
 ### v1.3.0 (07-04-2026)
 - Fixed: Improved protection against SQL injection
 - Added: Three optional columns added
