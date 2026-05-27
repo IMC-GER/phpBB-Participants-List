@@ -30,6 +30,7 @@ class ptsl_list_controller
 		protected \phpbb\template\template $template,
 		protected \phpbb\db\driver\driver_interface $db,
 		protected \phpbb\request\request_interface $request,
+		protected \phpbb\config\config $config,
 		protected string $phpbb_root_path,
 		protected string $phpEx,
 		protected string $table_prefix,
@@ -72,19 +73,19 @@ class ptsl_list_controller
 				{
 					if (!check_form_key('imcger\participantslist'))
 					{
-						trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl_anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
+						trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl-anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
 					}
 
 					$comment  = $this->db->sql_escape(censor_text($this->request->variable('ptsl_comment', '', true)));
 					$comment  = str_replace("\\n", " ", $comment);
 					$bitfield = $uid = $flags = '';
 
-					$warn_msg = generate_text_for_storage($comment, $uid, $bitfield, $flags, true, false, true, false, false, false, false, 'post');
+					$warn_msg = generate_text_for_storage($comment, $uid, $bitfield, $flags, true, false, true, false, false, false, false, 'ptsl_comment');
 
 					if (count($warn_msg))
 					{
 						$message = implode('<br>', $warn_msg);
-						trigger_error($message . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl_anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
+						trigger_error($message . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl-anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
 					}
 
 					$data['bbcode_bitfield'] = $bitfield;
@@ -111,7 +112,7 @@ class ptsl_list_controller
 
 					if ($data === false)
 					{
-						trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl_anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
+						trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl-anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
 					}
 
 					$this->check_permission($process, $data);
@@ -129,19 +130,20 @@ class ptsl_list_controller
 						'PTSL_USER_ID'		=> $data['user_id'] ?? 0,
 						'PTSL_USERNAME'		=> $data['username'] ?? '',
 						'PTSL_NUMBER'		=> $data['ptsl_number'] ?? 1,
-						'PTSL_COMMENT'		=> $comment ?? '',
-						'PTSL_OPT1'				=> $data['ptsl_opt1'] ?? 0,
-						'PTSL_COLUMN_OPT1'		=> $data['ptsl_column_opt1'] ?? 0,
-						'PTSL_COLUMN_OPT1_NAME'	=> $data['ptsl_column_opt1_name'] ?? '',
-						'PTSL_COLUMN_OPT1_DESC'	=> $data['ptsl_column_opt1_desc'] ?? '',
-						'PTSL_OPT2'				=> $data['ptsl_opt2'] ?? 0,
-						'PTSL_COLUMN_OPT2'		=> $data['ptsl_column_opt2'] ?? 0,
-						'PTSL_COLUMN_OPT2_NAME'	=> $data['ptsl_column_opt2_name'] ?? '',
-						'PTSL_COLUMN_OPT2_DESC'	=> $data['ptsl_column_opt2_desc'] ?? '',
-						'PTSL_OPT3'				=> $data['ptsl_opt3'] ?? 0,
-						'PTSL_COLUMN_OPT3'		=> $data['ptsl_column_opt3'] ?? 0,
-						'PTSL_COLUMN_OPT3_NAME'	=> $data['ptsl_column_opt3_name'] ?? '',
-						'PTSL_COLUMN_OPT3_DESC'	=> $data['ptsl_column_opt3_desc'] ?? '',
+						'PTSL_COMMENT'			 => $comment ?? '',
+						'PTSL_COMMENT_MAX_CHARS' => (int) $this->config['max_ptsl_comment_chars'],
+						'PTSL_OPT1'				 => $data['ptsl_opt1'] ?? 0,
+						'PTSL_COLUMN_OPT1'		 => $data['ptsl_column_opt1'] ?? 0,
+						'PTSL_COLUMN_OPT1_NAME'	 => $data['ptsl_column_opt1_name'] ?? '',
+						'PTSL_COLUMN_OPT1_DESC'	 => $data['ptsl_column_opt1_desc'] ?? '',
+						'PTSL_OPT2'				 => $data['ptsl_opt2'] ?? 0,
+						'PTSL_COLUMN_OPT2'		 => $data['ptsl_column_opt2'] ?? 0,
+						'PTSL_COLUMN_OPT2_NAME'	 => $data['ptsl_column_opt2_name'] ?? '',
+						'PTSL_COLUMN_OPT2_DESC'	 => $data['ptsl_column_opt2_desc'] ?? '',
+						'PTSL_OPT3'				 => $data['ptsl_opt3'] ?? 0,
+						'PTSL_COLUMN_OPT3'		 => $data['ptsl_column_opt3'] ?? 0,
+						'PTSL_COLUMN_OPT3_NAME'	 => $data['ptsl_column_opt3_name'] ?? '',
+						'PTSL_COLUMN_OPT3_DESC'	 => $data['ptsl_column_opt3_desc'] ?? '',
 					]);
 
 					$this->set_breadcrumb($data);
@@ -156,7 +158,7 @@ class ptsl_list_controller
 
 				if ($data === false)
 				{
-					trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl_anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
+					trigger_error($this->language->lang('FORM_INVALID') . '<br><br><a href="' . append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl-anchor") . '">&laquo; ' . $this->language->lang('BACK_TO_PREV') . '</a>', E_USER_WARNING);
 				}
 
 				if ($this->check_permission($process, $data))
@@ -176,7 +178,7 @@ class ptsl_list_controller
 		}
 
 		// Displays the participant list
-		redirect(append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl_anchor"));
+		redirect(append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$this->topic_id}#ptsl-anchor"));
 	}
 
 	/**
@@ -301,13 +303,13 @@ class ptsl_list_controller
 		{
 			$plst_navlinks[] = [
 				'BREADCRUMB_NAME'	=> $row['forum_name'],
-				'U_BREADCRUMB'		=> append_sid("{$this->phpbb_root_path}viewforum.{$this->phpEx}", 'f=' . $row['forum_id']),
+				'U_BREADCRUMB'		=> append_sid($this->phpbb_root_path . 'viewforum.' . $this->phpEx, 'f=' . $row['forum_id']),
 			];
 		}
 
 		$plst_navlinks[] = [
 			'BREADCRUMB_NAME'	=> $data['topic_title'],
-			'U_BREADCRUMB'		=> append_sid(($this->phpbb_root_path . 'viewtopic.' . $this->phpEx), "t={$data['topic_id']}"),
+			'U_BREADCRUMB'		=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$data['topic_id']}"),
 		];
 
 		$this->template->assign_vars(['navlinks' => $plst_navlinks, ]);

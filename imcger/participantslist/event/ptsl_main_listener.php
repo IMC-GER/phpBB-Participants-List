@@ -15,8 +15,7 @@ use imcger\participantslist\ext;
 
 class ptsl_main_listener implements EventSubscriberInterface
 {
-	private	  string $post_delete_conditions;
-	protected string $sortby;
+	protected string $sort_dir;
 
 	public function __construct
 	(
@@ -27,12 +26,11 @@ class ptsl_main_listener implements EventSubscriberInterface
 		protected \phpbb\db\driver\driver_interface $db,
 		protected \phpbb\request\request_interface $request,
 		protected \phpbb\controller\helper $helper,
-		protected string $phpbb_root_path,
-		protected string $phpEx,
+		protected string $root_path,
+		protected string $php_ext,
 		protected string $table_prefix,
 	)
 	{
-		$this->post_delete_conditions = 0;
 		$this->sort_dir = $this->request->variable('ptsl-sd', '');
 	}
 
@@ -42,19 +40,21 @@ class ptsl_main_listener implements EventSubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'core.posting_modify_post_data'			=> 'posting_modify_post_data',
-			'core.posting_modify_submission_errors'	=> 'posting_modify_submission_errors',
-			'core.posting_modify_submit_post_after'	=> 'posting_modify_submit_post_after',
-			'core.posting_modify_template_vars'		=> 'posting_modify_template_vars',
-			'core.viewtopic_get_post_data'			=> 'set_template_vars',
-			'core.user_setup_after'					=> 'user_setup_after',
-			'core.handle_post_delete_conditions'	=> 'handle_post_delete_conditions',
-			'core.delete_post_after'				=> 'delete_post_after',
+			'core.posting_modify_post_data'				=> 'posting_modify_post_data',
+			'core.posting_modify_submission_errors'		=> 'posting_modify_submission_errors',
+			'core.posting_modify_submit_post_after'		=> 'posting_modify_submit_post_after',
+			'core.posting_modify_template_vars'			=> 'posting_modify_template_vars',
+			'core.viewtopic_get_post_data'				=> 'set_template_vars',
+			'core.user_setup_after'						=> 'user_setup_after',
+			'core.delete_post_after'					=> 'delete_post_after',
+			'core.set_topic_visibility_before_sql'		=> 'set_topic_visibility_before_sql',
+			'core.set_post_visibility_before_sql'		=> 'set_post_visibility_before_sql',
+			'core.delete_posts_in_transaction_before'	=> 'delete_posts_in_transaction_before',
 		];
 	}
 
 	/**
-	 * Display checkbox in editor only on first post
+	 * Display pts. list tab in editor, but only for the first post
 	 */
 	public function posting_modify_post_data(object $event): void
 	{
@@ -65,16 +65,19 @@ class ptsl_main_listener implements EventSubscriberInterface
 			$post_data += ['topic_ptsl_disp' 	=> 0];
 		}
 
-		$post_data += ['ptsl_column_opt1'		=> 0];
-		$post_data += ['ptsl_column_opt2'		=> 0];
-		$post_data += ['ptsl_column_opt3'		=> 0];
-		$post_data += ['ptsl_column_opt1_name'	=> ''];
-		$post_data += ['ptsl_column_opt2_name'	=> ''];
-		$post_data += ['ptsl_column_opt3_name'	=> ''];
-		$post_data += ['ptsl_column_opt1_desc'	=> ''];
-		$post_data += ['ptsl_column_opt2_desc'	=> ''];
-		$post_data += ['ptsl_column_opt3_desc'	=> ''];
-		$post_data += ['ptsl_can_add_list'		=> false];
+		$post_data += [
+			'ptsl_column_opt1'      => 0,
+			'ptsl_column_opt2'      => 0,
+			'ptsl_column_opt3'      => 0,
+			'ptsl_column_opt1_name' => '',
+			'ptsl_column_opt2_name' => '',
+			'ptsl_column_opt3_name' => '',
+			'ptsl_column_opt1_desc' => '',
+			'ptsl_column_opt2_desc' => '',
+			'ptsl_column_opt3_desc' => '',
+			'ptsl_can_add_list'     => false,
+		];
+
 
 		// Only show ptsl panel when editing the first post in topic
 		if (($event['mode'] == 'post' || ($event['mode'] == 'edit') && $event['post_id'] == $event['post_data']['topic_first_post_id']) && $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id']) && $this->auth->acl_get('u_imcger_ptsl_view'))
@@ -226,6 +229,20 @@ class ptsl_main_listener implements EventSubscriberInterface
 	 */
 	public function set_template_vars(object $event): void
 	{
+		$sql = 'SELECT *
+				FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+				WHERE topic_id = ' . (int) $event['topic_id'];
+
+		$result			 = $this->db->sql_query_limit($sql, 1);
+		$ptsl_table_data = $this->db->sql_fetchrow($result);
+		$this->db->sql_freeresult($result);
+
+		// Don't display list when topic first post is soft delete
+		if ($ptsl_table_data == false || $ptsl_table_data['post_not_visibility'])
+		{
+			return;
+		}
+
 		$ptsl_go_to_list = $this->auth->acl_get('u_imcger_ptsl_view') && $event['topic_data']['topic_ptsl_disp'];
 		$ptsl_u_view	 = $ptsl_go_to_list && in_array($event['topic_data']['topic_first_post_id'], $event['post_list']);
 
@@ -233,7 +250,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 		{
 			$this->template->assign_vars([
 				'S_PTSL_GO_TO_LIST' => true,
-				'U_PTSL_GO_TO_LIST' => append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, "t={$event['topic_id']}#ptsl-anchor"),
+				'U_PTSL_GO_TO_LIST' => append_sid($this->root_path . 'viewtopic.' . $this->php_ext, "t={$event['topic_id']}#ptsl-anchor"),
 			]);
 		}
 
@@ -261,13 +278,12 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'WHERE'     => 'pd.topic_id = ' . (int) $topic_id,
 			];
 
-			$query_string = $this->user->page['query_string'];
-			parse_str($query_string, $query_para);
+			parse_str($this->user->page['query_string'], $query_para);
+			$query_para['t'] = (int) $topic_id;
 
 			// Set default sort direction
-			$query_para['t']  = $topic_id;
-			$alter_query_para = array_merge($query_para, ['u' => $user_id]);
 			$sort_query_para  = array_merge($query_para, ['ptsl-sd' => 'a']);
+			$alter_query_para = array_merge($query_para, ['u' => $user_id]);
 
 			if ($this->sort_dir == 'a')
 			{
@@ -286,7 +302,7 @@ class ptsl_main_listener implements EventSubscriberInterface
 			$ptsl_table = [];
 			$flags		= OPTION_FLAG_BBCODE + OPTION_FLAG_SMILIES;
 
-			while ($row = $this->db->sql_fetchrow())
+			while ($row = $this->db->sql_fetchrow($result))
 			{
 				$comment = generate_text_for_display($row['ptsl_comment'], $row['bbcode_uid'], $row['bbcode_bitfield'], $flags, true);
 
@@ -316,21 +332,6 @@ class ptsl_main_listener implements EventSubscriberInterface
 			}
 			$this->db->sql_freeresult($result);
 
-			$sql = 'SELECT *
-					FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
-					WHERE topic_id = ' . (int) $topic_id;
-
-			$result		= $this->db->sql_query($sql);
-			$ptsl_data	= $this->db->sql_fetchrow($result);
-			$this->db->sql_freeresult($result);
-
-			if ($ptsl_data)
-			{
-				$this->template->assign_vars([
-					'PTSL_NUMBER_OPT_DISP'	=> $ptsl_data['ptsl_column_opt1'] || $ptsl_data['ptsl_column_opt2'] || $ptsl_data['ptsl_column_opt3'],
-				]);
-			}
-
 			$this->template->assign_vars([
 				'ptsl_table'			=> $ptsl_table,
 				'PTSL_TOPIC_ID'			=> $topic_id,
@@ -339,20 +340,20 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'PTSL_NUMBER_OPT2'		=> $ptsl_number_opt2,
 				'PTSL_NUMBER_OPT3'		=> $ptsl_number_opt3,
 				'PTSL_USERNAME'			=> $this->user->data['username'],
-				'PTSL_COLUMN_OPT1'		=> $ptsl_data['ptsl_column_opt1'] ?? 0,
-				'PTSL_COLUMN_OPT2'		=> $ptsl_data['ptsl_column_opt2'] ?? 0,
-				'PTSL_COLUMN_OPT3'		=> $ptsl_data['ptsl_column_opt3'] ?? 0,
-				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_data['ptsl_column_opt1_name'] ?? '',
-				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_data['ptsl_column_opt2_name'] ?? '',
-				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_data['ptsl_column_opt3_name'] ?? '',
+				'PTSL_COLUMN_OPT1'		=> $ptsl_table_data['ptsl_column_opt1'],
+				'PTSL_COLUMN_OPT2'		=> $ptsl_table_data['ptsl_column_opt2'],
+				'PTSL_COLUMN_OPT3'		=> $ptsl_table_data['ptsl_column_opt3'],
+				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_table_data['ptsl_column_opt1_name'],
+				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_table_data['ptsl_column_opt2_name'],
+				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_table_data['ptsl_column_opt3_name'],
 				'PTSL_SORT_DIRECTION'	=> $alter_query_para['ptsl-sd'] ?? '' ,
 				'S_PTSL_GO_TO_LIST'		=> true,
 				'S_PTSL_CAN_VIEW_LIST'	=> $ptsl_u_view,
 				'S_PTSL_M_EDIT'			=> $ptsl_m_edit,
 				'S_PTSL_M_DELETE'		=> $ptsl_m_delete,
 				'S_PTSL_USER_IN_LIST'	=> $user_inlist,
-				'U_PTSL_GO_TO_LIST'		=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, $query_para) . '#ptsl-anchor',
-				'U_PTSL_SORT_BY_NAME'	=> append_sid($this->phpbb_root_path . 'viewtopic.' . $this->phpEx, $sort_query_para) . '#ptsl-anchor',
+				'U_PTSL_GO_TO_LIST'		=> append_sid($this->root_path . 'viewtopic.' . $this->php_ext, $query_para) . '#ptsl-anchor',
+				'U_PTSL_SORT_BY_NAME'	=> append_sid($this->root_path . 'viewtopic.' . $this->php_ext, $sort_query_para) . '#ptsl-anchor',
 				'U_PTSL_ADD_TO_LIST'	=> append_sid($url_list_add, $alter_query_para),
 				'U_PTSL_EDIT_LIST'		=> append_sid($url_list_edit, $alter_query_para),
 				'U_PTSL_DEL_FROM_LIST'	=> append_sid($url_list_del, $alter_query_para),
@@ -369,11 +370,59 @@ class ptsl_main_listener implements EventSubscriberInterface
 	}
 
 	/**
-	 * Check if participant list is in topic.
+	 * Soft delete participant list.
 	 */
-	public function handle_post_delete_conditions(object $event)
+	public function set_topic_visibility_before_sql(object $event)
 	{
-		$this->post_delete_conditions = $event['post_data']['topic_ptsl_disp'];
+		if ($event['visibility'] == ITEM_DELETED)
+		{
+			// Delete the participant list soft
+			$sql = 'UPDATE ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+					SET post_not_visibility = (SELECT topic_first_post_id FROM ' . TOPICS_TABLE . ' WHERE topic_id = ' . (int) $event['topic_id'] . ')
+					WHERE topic_id = ' . (int) $event['topic_id'];
+			$this->db->sql_query($sql);
+		}
+		else if ($event['visibility'] == ITEM_APPROVED)
+		{
+			$sql = 'UPDATE ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+					SET post_not_visibility = 0
+					WHERE topic_id = ' . (int) $event['topic_id'];
+			$this->db->sql_query($sql);
+		}
+	}
+
+	/**
+	 * Soft delete participant list.
+	 */
+	public function set_post_visibility_before_sql(object $event)
+	{
+		if ($event['visibility'] == ITEM_DELETED)
+		{
+			// Delete the participant list soft
+			$sql = 'SELECT topic_first_post_id
+					FROM ' . TOPICS_TABLE . '
+					WHERE topic_id = ' . (int) $event['topic_id'] . '
+						AND ' . $this->db->sql_in_set('topic_first_post_id', $event['post_id']);
+
+			$result = $this->db->sql_query($sql);
+			$topic_first_post_id = $this->db->sql_fetchfield('topic_first_post_id');
+			$this->db->sql_freeresult($result);
+
+			if ($topic_first_post_id)
+			{
+				$sql = 'UPDATE ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+						SET post_not_visibility = ' . (int) $topic_first_post_id . '
+						WHERE topic_id = ' . (int) $event['topic_id'];
+				$this->db->sql_query($sql);
+			}
+		}
+		else if ($event['visibility'] == ITEM_APPROVED)
+		{
+			$sql = 'UPDATE ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+					SET post_not_visibility = 0
+					WHERE ' . $this->db->sql_in_set('post_not_visibility', $event['post_id']);
+			$this->db->sql_query($sql);
+		}
 	}
 
 	/**
@@ -381,24 +430,64 @@ class ptsl_main_listener implements EventSubscriberInterface
 	 */
 	public function delete_post_after(object $event)
 	{
-		if (($this->post_delete_conditions || $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id'])) && ($event['post_id'] == $event['data']['topic_first_post_id']))
+		if ($event['post_mode'] == 'delete_first_post' || $event['post_mode'] == 'delete_topic')
 		{
-			$sql = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_DATA_TABLE . '
+			$sql = 'SELECT post_not_visibility
+					FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
 					WHERE topic_id = ' . (int) $event['topic_id'];
-			$this->db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
-					WHERE topic_id = ' . (int) $event['topic_id'];
-			$this->db->sql_query($sql);
+			$result = $this->db->sql_query($sql);
+			$list_visibility = !$this->db->sql_fetchfield('post_not_visibility');
+			$this->db->sql_freeresult($result);
 
-			$sql = 'UPDATE ' . TOPICS_TABLE . '
-					SET topic_ptsl_disp = 0
-					WHERE topic_id = ' . (int) $event['topic_id'];
-			$this->db->sql_query($sql);
+			// Delete the participant list permanently
+			if ($list_visibility && !$event['is_soft'])
+			{
+				$this->delete_list($event['topic_id']);
+			}
+
+			// Delete the participant list soft
+			if (!$list_visibility && $event['is_soft'])
+			{
+				$sql = 'UPDATE ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+						SET post_not_visibility = ' . (int) $event['post_id'] . '
+						WHERE topic_id = ' . (int) $event['topic_id'];
+				$this->db->sql_query($sql);
+			}
 		}
 	}
 
-	/*
+	/**
+	 * Delete the participant list when the associated post is deleted.
+	 */
+	public function delete_posts_in_transaction_before(object $event)
+	{
+		$topic_ids = array_unique($event['topic_ids']);
+
+		$sql_array = [
+			'SELECT'    => 't.topic_id',
+			'FROM'      => [TOPICS_TABLE => 't'],
+			'LEFT_JOIN' => [
+				[
+					'FROM' => [$this->table_prefix . ext::PTSL_TABLE_DATA_TABLE => 'ptd', ],
+					'ON'   => $this->db->sql_in_set('ptd.topic_id', $topic_ids) . '
+						AND (ptd.post_not_visibility = t.topic_first_post_id OR ptd.post_not_visibility = 0)',
+				],
+			],
+			'WHERE'     => $this->db->sql_in_set('t.topic_id', $topic_ids) . '
+				AND ' . $this->db->sql_in_set('t.topic_first_post_id', $event['post_ids']) . '
+				AND ptd.topic_id = t.topic_id',
+		];
+
+		$sql	= $this->db->sql_build_query('SELECT', $sql_array);
+		$result = $this->db->sql_query($sql);
+		$rowset = $this->db->sql_fetchrowset($result);
+		$this->db->sql_freeresult($result);
+
+		$this->delete_list(array_column($rowset, 'topic_id'));
+	}
+
+	/**
 	 * Creates an array of variables for the SelectBox macro
 	 */
 	public function select_struct(array|string $cfg_value, array $options): array
@@ -420,5 +509,38 @@ class ptsl_main_listener implements EventSubscriberInterface
 		}
 
 		return $options_tpl;
+	}
+
+	/**
+	 * Delete the participant list.
+	 */
+	public function delete_list(int|array $topics): void
+	{
+		$topic_ids = [];
+
+		if (is_int($topics))
+		{
+			$topic_ids[] = $topics;
+		}
+		else
+		{
+			$topic_ids = $topics;
+		}
+
+		foreach ($topic_ids as $topic_id)
+		{
+			$sql = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_DATA_TABLE . '
+					WHERE topic_id = ' . (int) $topic_id;
+			$this->db->sql_query($sql);
+
+			$sql = 'DELETE FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . '
+					WHERE topic_id = ' . (int) $topic_id;
+			$this->db->sql_query($sql);
+
+			$sql = 'UPDATE ' . TOPICS_TABLE . '
+					SET topic_ptsl_disp = 0
+					WHERE topic_id = ' . (int) $topic_id;
+			$this->db->sql_query($sql);
+		}
 	}
 }

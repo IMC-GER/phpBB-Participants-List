@@ -52,58 +52,49 @@
 }
 
 /* Participants List Table */
+
+/* Table columns: Name | Pts. | Comment | Button */
 .ptsl-table {
-	display: table;
+	display: grid;
+	grid-template-columns: max-content max-content 1fr max-content;
+	grid-template-rows: auto;
 	width: 100%;
 }
 
+/* Header and footer: one row each across all columns */
+.ptsl-table-thead,
+.ptsl-table-tfooter {
+	display: contents;
+}
 .ptsl-table-thead {
-	display: table-header-group;
 	font-weight: bold;
 }
 
-.ptsl-table-tbody {
-	display: table-row-group;
-}
-
 .ptsl-table-tfooter {
-	display: table-footer-group;
 	font-weight: bold;
 	font-style: italic;
 }
 
+/* Body: a scrollable area that incorporates all columns as a subgrid */
+.ptsl-table-tbody {
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: subgrid;
+	overflow: hidden auto;
+	max-height: calc((12px + 1.4em) * 12); /* Here you can set the height of the table before the main content becomes scrollable */
+}
+
 .ptsl-table-tr {
-	display: table-row;
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: subgrid;
 }
 
-.ptsl-table-thead .ptsl-table-tr:last-of-type [class^="ptsl-table-td"],
-.ptsl-table-tbody .ptsl-table-tr:last-of-type [class^="ptsl-table-td"] {
-	border-bottom: 1px solid #ccc;
-}
-
-.ptsl-table-tfooter .ptsl-table-tr:last-of-type [class^="ptsl-table-td"]:nth-last-child(n + 3) {
-	border-bottom: 3px double #ccc;
-}
-
-.ptsl-table-tbody .ptsl-table-tr:hover {
-	background-color: #CADCEB;
-}
-
+/* Cells */
 [class^="ptsl-table-td"] {
-	display: table-cell;
 	padding: 6px;
 	vertical-align: middle;
-}
-
-.ptsl-table-td:nth-child(1),
-.ptsl-table-td-num,
-.ptsl-table-td-button {
-	width: 1%;
-	white-space: nowrap;
-}
-
-.ptsl-table-td-comment {
-	width: 100%;
+	align-content: center;
 }
 
 .ptsl-table-td-num {
@@ -114,9 +105,32 @@
 	text-align: right;
 }
 
+/* Dividing lines */
+.ptsl-table-thead .ptsl-table-tr [class^="ptsl-table-td"] {
+	border-bottom: 1px solid #ccc;
+}
+
+.ptsl-table-tfooter .ptsl-table-tr [class^="ptsl-table-td"] {
+	border-top: 1px solid #ccc;
+}
+
+.ptsl-table-tfooter .ptsl-table-tr [class^="ptsl-table-td"]:not(:nth-last-child(-n+2)) {
+	border-bottom: 3px double #ccc;
+}
+
+/* Hover */
+.ptsl-table-tbody .ptsl-table-tr:hover [class^="ptsl-table-td"] {
+	background-color: #CADCEB;
+}
+
 @media (max-width: 700px) {
 	.ptsl-table-thead .ptsl-table-td-num {
 		writing-mode: sideways-lr;
+	}
+
+	#ptsl-list-button {
+		right: 25px;
+		position: relative;
 	}
 }
 

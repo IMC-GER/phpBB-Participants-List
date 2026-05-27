@@ -10,7 +10,7 @@
 
 namespace imcger\participantslist\core;
 
-class ext_requirements
+class imc_ext_requirements
 {
 	protected $metadata;
 	protected $ext_manager;

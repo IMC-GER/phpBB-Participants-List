@@ -14,6 +14,11 @@ use imcger\participantslist\ext;
 
 class s_1_1_0 extends \phpbb\db\migration\migration
 {
+	public function effectively_installed()
+	{
+		return $this->db_tools->sql_column_exists($this->table_prefix . ext::PTSL_DATA_TABLE, 'bbcode_bitfield');
+	}
+
 	public static function depends_on()
 	{
 		return ['\imcger\participantslist\migrations\v_1_1_0'];

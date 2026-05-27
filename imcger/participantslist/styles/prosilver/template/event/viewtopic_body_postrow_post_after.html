@@ -11,12 +11,21 @@
 	{% INCLUDECSS '@imcger_participantslist/ptsl_common.css' %}
 	{% DEFINE IMCGER_PARTICIPAN_LIST = true %}
 
+<style>
+	/* Grid-Columns: Name | Pts. | Option 1 |  Option 2 |  Option 3 | Comment | Button */
+	.ptsl-table {
+		grid-template-columns: max-content max-content{{ PTSL_COLUMN_OPT1 ? ' max-content' }}{{ PTSL_COLUMN_OPT2 ? ' max-content' }}{{ PTSL_COLUMN_OPT3 ? ' max-content' }} 1fr max-content;
+	}
+</style>
+
 <div id="ptsl-anchor" class="post bg2">
 	<div class="inner">
 		<div class="postbody">
 			<div id="ptsl_content">
 				<h3 class="first">
-					{{ lang('PTSL_TITLE') }}
+					<a href="{{ U_PTSL_GO_TO_LIST }}" title="{{ lang('PTSL_TITLE') }}">
+						{{ lang('PTSL_TITLE') }}
+					</a>
 				</h3>
 				<div id="ptsl-list-button" class="post-buttons">
 				{% if S_PTSL_USER_IN_LIST and S_REGISTERED_USER %}
@@ -88,7 +97,7 @@
 							</div>
 						{% endfor %}
 						</div>
-						{% if PTSL_NUMBER_OPT_DISP %}
+						{% if PTSL_COLUMN_OPT1 or PTSL_COLUMN_OPT2 or PTSL_COLUMN_OPT3 %}
 						<div class="ptsl-table-tfooter">
 							<div class="ptsl-table-tr">
 								<div class="ptsl-table-td">{{ lang('PTSL_PTS_SUM') }}</div>

@@ -38,6 +38,18 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
+### v1.3.2 (27-05-2026)
+- Added: Vars in config table for minimum and maximum chars in comment to use in `generate_text_for_storage()`
+- Added: Column in ptsl data table to mark list as soft delete
+- Added: Function in migration to fill ptsl data table with data from old List before v1.3.0
+- Added: Support for soft delete
+- Added: Added link to table title
+- Added: The table content becomes scrollable when the list gets long
+- Changed: Improved conditions for deleting the list 
+- Changed: Right margin for list buttons in responsive view
+- Changed: Set max char in ptsl_comment with TWIG
+- Changed: Rename `ext_requirements.php` to `imc_ext_requirements.php`
+
 ### v1.3.1 (09-04-2026)
 - Fixed: Missing language variable in template
 - Fixed: Missing GET parameter ‘t’ when the first post in the topic is accessed directly

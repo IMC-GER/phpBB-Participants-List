@@ -22,7 +22,7 @@ class ext extends \phpbb\extension\base
 			return false;
 		}
 
-		$ext_requirements = new \imcger\participantslist\core\ext_requirements($this->extension_name);
+		$ext_requirements = new \imcger\participantslist\core\imc_ext_requirements($this->extension_name);
 
 		return $ext_requirements->check();
 	}
