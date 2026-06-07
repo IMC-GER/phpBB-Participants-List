@@ -58,14 +58,15 @@ class v_1_3_2 extends \phpbb\db\migration\migration
 			'LEFT_JOIN' => [
 				[
 					'FROM' => [$this->table_prefix . ext::PTSL_TABLE_DATA_TABLE => 'ptd'],
-					'ON'   => 'ptd.topic_id > 0',
+					'ON'   => 't.topic_id = ptd.topic_id',
 				],
 				[
 					'FROM' => [$this->table_prefix . ext::PTSL_DATA_TABLE => 'pd'],
-					'ON'   => 'pd.topic_id <> ptd.topic_id',
+					'ON'   => 't.topic_id = pd.topic_id',
 				],
 			],
-			'WHERE'     => 't.topic_ptsl_disp = 1 OR t.topic_id = pd.topic_id',
+			'WHERE'     => 'ptd.topic_id IS NULL
+						AND (pd.topic_id IS NOT NULL OR t.topic_ptsl_disp = 1)',
 		];
 
 		$sql	= $this->db->sql_build_query('SELECT_DISTINCT', $sql_array);

@@ -78,7 +78,6 @@ class ptsl_main_listener implements EventSubscriberInterface
 			'ptsl_can_add_list'     => false,
 		];
 
-
 		// Only show ptsl panel when editing the first post in topic
 		if (($event['mode'] == 'post' || ($event['mode'] == 'edit') && $event['post_id'] == $event['post_data']['topic_first_post_id']) && $this->auth->acl_get('f_imcger_ptsl_enable', $event['forum_id']) && $this->auth->acl_get('u_imcger_ptsl_view'))
 		{

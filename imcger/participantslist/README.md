@@ -38,6 +38,9 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 
 ## Changelog
 
+### v1.3.3 (07-06-2026)
+- Fixed: SQL-Error in `migrations/v_1_3_2.php`
+
 ### v1.3.2 (27-05-2026)
 - Added: Vars in config table for minimum and maximum chars in comment to use in `generate_text_for_storage()`
 - Added: Column in ptsl data table to mark list as soft delete
