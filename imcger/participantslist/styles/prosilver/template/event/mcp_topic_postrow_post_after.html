@@ -1,0 +1,16 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if not definition.IMCGER_PARTICIPAN_LIST and S_PTSL_CAN_VIEW_LIST %}
+	{% INCLUDECSS '@imcger_participantslist/ptsl_common.css' %}
+	{% DEFINE IMCGER_PARTICIPAN_LIST = true %}
+
+	{% include '@imcger_participantslist/ptsl_table_body.html' %}
+
+{% endif %}

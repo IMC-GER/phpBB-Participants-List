@@ -45,18 +45,18 @@ class imc_ext_requirements
 
 		if (strlen($require_php[0]))
 		{
-			if (trim($require_php[0])[0] == '^')
+			if (trim($require_php[0], ' \f\n\r\t\v\x00')[0] == '^')
 			{
 				$require_php = $this->convert_caret_version($require_php[0]);
 			}
-			else if (trim($require_php[0])[0] == '~')
+			else if (trim($require_php[0], ' \f\n\r\t\v\x00')[0] == '~')
 			{
 				$require_php = $this->convert_tilde_version($require_php[0]);
 			}
 
 			foreach ($require_php as $value)
 			{
-				$required = $this->split_compare_data(htmlspecialchars_decode($value, ENT_QUOTES || ENT_SUBSTITUTE || ENT_HTML5));
+				$required = $this->split_compare_data(htmlspecialchars_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5));
 
 				if (!phpbb_version_compare(PHP_VERSION, $required['version'], $required['operator']))
 				{
@@ -74,18 +74,18 @@ class imc_ext_requirements
 
 		if (strlen($require_phpbb[0]))
 		{
-			if (trim($require_phpbb[0])[0] == '^')
+			if (trim($require_phpbb[0], ' \f\n\r\t\v\x00')[0] == '^')
 			{
 				$require_phpbb = $this->convert_caret_version($require_phpbb[0]);
 			}
-			else if (trim($require_phpbb[0])[0] == '~')
+			else if (trim($require_phpbb[0], ' \f\n\r\t\v\x00')[0] == '~')
 			{
 				$require_phpbb = $this->convert_tilde_version($require_phpbb[0]);
 			}
 
 			foreach ($require_phpbb as $value)
 			{
-				$required = $this->split_compare_data(htmlspecialchars_decode($value, ENT_QUOTES || ENT_SUBSTITUTE || ENT_HTML5));
+				$required = $this->split_compare_data(htmlspecialchars_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5));
 
 				if (!phpbb_version_compare(PHPBB_VERSION, $required['version'], $required['operator']))
 				{

@@ -98,10 +98,11 @@
 						</div>
 
 						{{ S_FORM_TOKEN }}
-						{{ S_HIDDEN_FIELDS }}
 						<input type="text" id="ptsl_id" name="ptsl_id" value="{{ PTSL_ID }}" hidden>
 						<input type="text" id="user_id" name="user_id" value="{{ PTSL_USER_ID }}" hidden>
 						<input type="text" id="topic_id" name="topic_id" value="{{ PTSL_TOPIC_ID }}" hidden>
+						<input type="text" id="forum_id" name="forum_id" value="{{ PTSL_FORUM_ID }}" hidden>
+						<input type="text" id="ptsl_mode" name="ptsl_mode" value="{{ S_PTSL_IS_MCP ? 'mcp' }}" hidden>
 					</form>
 				</div>
 			</div>

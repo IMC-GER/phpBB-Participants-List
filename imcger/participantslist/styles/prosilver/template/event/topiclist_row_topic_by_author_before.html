@@ -1,0 +1,12 @@
+{#
+ * Participants List
+ * An extension for the phpBB Forum Software package.
+ *
+ * @copyright (c) 2025, Thorsten Ahlers
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ #}
+
+{% if rtng.S_PTSL_HAS_LIST || topicrow.S_PTSL_HAS_LIST || searchresults.S_PTSL_HAS_LIST %}
+	<i class="icon fa-user-plus fa-fw" title="{{ lang('PTSL_HAS_LIST') }}" aria-hidden="true"></i><span class="sr-only">{{ lang('PTSL_HAS_LIST') }}</span>
+{% endif %}

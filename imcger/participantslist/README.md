@@ -9,6 +9,16 @@ Moderators with the permissions “Can edit posts” and “Can permanently dele
 
 If the first post in the topic is deleted, the associated list is also deleted and all entries in the participant list are removed from the database.
 
+[![Tests](https://github.com/IMC-GER/phpBB-Participants-List/actions/workflows/tests.yml/badge.svg)](https://github.com/IMC-GER/phpBB-Participants-List/actions/workflows/tests.yml)
+
+## Settings
+
+### Forum permissions
+- Content - Can create participants list.
+
+### User permissions
+- Post - Can see participants list.
+
 ## Screenshots
 - [Participants List](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/list_reg_user.png)
 - [Registrations Form](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/registration_form.png)
@@ -16,12 +26,12 @@ If the first post in the topic is deleted, the associated list is also deleted a
 - [Forum permissions](https://raw.githubusercontent.com/IMC-GER/images/main/screenshots/participantslist/forum_permissions.png)
 
 ## Requirements
-- phpBB >= 3.3.2 and < 4.0.0-dev
-- php >= 8.0.0 and <= 8.5.x
+- phpBB >= 3.3.19 and < 4.0.0-dev
+- php 8.x
 
 ## Installation
 Copy the extension to `phpBB3/ext/imcger/participantslist`.
-Go to “ACP” > “Customise” > “Manage extensions” and enable the “Show Hidden Password” extension.
+Go to “ACP” > “Customise” > “Manage extensions” and enable the “Participants List” extension.
 After enable the extension go to “ACP” > “Permissions” > “Forum permissions”. Select a Forum and add the permission “Add participant list” for registered user.
 
 ## Update
@@ -35,53 +45,6 @@ After enable the extension go to “ACP” > “Permissions” > “Forum permis
 - Navigate in the ACP to `Customise -> Manage extensions`.
 - Click the `Disable` link for “Participants List”.
 - To permanently uninstall, click `Delete Data`, then delete the `participantslist` folder from `phpBB3/ext/imcger/`.
-
-## Changelog
-
-### v1.3.3 (07-06-2026)
-- Fixed: SQL-Error in `migrations/v_1_3_2.php`
-
-### v1.3.2 (27-05-2026)
-- Added: Vars in config table for minimum and maximum chars in comment to use in `generate_text_for_storage()`
-- Added: Column in ptsl data table to mark list as soft delete
-- Added: Function in migration to fill ptsl data table with data from old List before v1.3.0
-- Added: Support for soft delete
-- Added: Added link to table title
-- Added: The table content becomes scrollable when the list gets long
-- Changed: Improved conditions for deleting the list 
-- Changed: Right margin for list buttons in responsive view
-- Changed: Set max char in ptsl_comment with TWIG
-- Changed: Rename `ext_requirements.php` to `imc_ext_requirements.php`
-
-### v1.3.1 (09-04-2026)
-- Fixed: Missing language variable in template
-- Fixed: Missing GET parameter ‘t’ when the first post in the topic is accessed directly
-- Fixed: PHP Warning when data table is empty
-
-### v1.3.0 (07-04-2026)
-- Fixed: Improved protection against SQL injection
-- Added: Three optional columns added
-- Added: Can sort the list by name
-- Changed: Create table with div elements
-- Changed: Display full username in list (colour & profile link)
-
-### v1.1.0 (13-01-2026)
-- Fixed: Incorrect colours in list while using css-class `zebra-list`.
-- Fixed: Sign counter don't count when paste text.
-- Fixed: Don't display special chars in username.
-- Added: Button properties can be changed in css-file.
-- Added: Support for emojis in comment.
-- Added: User Permission “Can see participant list”.
-- Changed: Improved permission check.
-- Changed: Improved db-query for the breadcrumbs menue.
-- Changed: Formatting of the input form optimized.
-
-### v1.0.0-rc2 (16-12-2025)
-- Fixed: Incorrect permissions have been granted for the role with full access.
-- Fixed: Sign counter leaves position when changing the size of the textarea
-- Fixed: Footer display incorrect
-
-### v1.0.0-rc (13-12-2025)
 
 ## License
 [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)

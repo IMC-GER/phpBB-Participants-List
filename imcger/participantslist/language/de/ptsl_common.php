@@ -31,7 +31,7 @@ if (empty($lang) || !is_array($lang))
 // in a url you again do not need to specify an order e.g., 'Click %sHERE%s' is fine
 //
 // Some characters you may want to copy&paste:
-// ’ »« „“ ” …
+// ’ »« „“ ” … —
 //
 
 $lang = array_merge($lang, [
@@ -52,6 +52,7 @@ $lang = array_merge($lang, [
 
 	'PTSL_GO_TO_LIST_SHORT'		=> 'TN-Liste',
 	'PTSL_GO_TO_LIST'			=> 'Zur Teilnehmerliste',
+	'PTSL_HAS_LIST'				=> 'Hat Teilnehmerliste',
 
 	'PTSL_ADD_PTS_LIST'			=> 'Teilnehmerliste hinzufügen',
 	'PTSL_DESCRIPTION'			=> 'Du kannst zu diesem Thema eine Teilnehmerliste hinzufügen. Optional kannst du bis zu drei zusätzliche Spalten hinzufügen. Bei diesen kannst du festlegen, ob im Registrierungsformular ein numerisches Feld oder eine Checkbox angezeigt wird.',
@@ -64,4 +65,9 @@ $lang = array_merge($lang, [
 	'PTSL_NONE'					=> 'Keine',
 	'PTSL_CHECKBOX'				=> 'Checkbox',
 	'PTSL_NUMBERS'				=> 'Numerischer Wert',
+
+	'PTSL_DATA_READ_ERROR'		=> 'Datensatz kann nicht gelesen werden.',
+
+	'PTSL_LOG_EDIT_LIST_ENTRY'	=> '<strong>Teilnehmerliste von „%1$s“ geändert.</strong><br>Der Eintrag von „%2$“ wurde geändert.',
+	'PTSL_LOG_DEL_LIST_ENTRY'	=> '<strong>Teilnehmerliste von „%1$s“ geändert.</strong><br>Der Eintrag von „%2$“ wurde gelöscht.',
 ]);

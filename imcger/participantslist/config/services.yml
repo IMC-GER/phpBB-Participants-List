@@ -20,6 +20,22 @@ services:
         tags:
             - { name: event.listener }
             
+    imcger.participantslist.ptsl_mcp_listener:
+        class: imcger\participantslist\event\ptsl_mcp_listener
+        arguments:
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@template'
+            - '@dbal.conn'
+            - '@request'
+            - '@controller.helper'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+        tags:
+            - { name: event.listener }
+            
     imcger.participantslist.ptsl_list_controller:
         class: imcger\participantslist\controller\ptsl_list_controller
         arguments:
@@ -31,6 +47,7 @@ services:
             - '@dbal.conn'
             - '@request'
             - '@config'
+            - '@log'
             - '%core.root_path%'
             - '%core.php_ext%'
             - '%core.table_prefix%'

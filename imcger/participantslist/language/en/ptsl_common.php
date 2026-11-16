@@ -52,6 +52,7 @@ $lang = array_merge($lang, [
 
 	'PTSL_GO_TO_LIST_SHORT'		=> 'Pts.-list',
 	'PTSL_GO_TO_LIST'			=> 'Go to the participants list',
+	'PTSL_HAS_LIST'				=> 'Has participants list',
 
 	'PTSL_ADD_PTS_LIST'			=> 'Add participant list',
 	'PTSL_DESCRIPTION'			=> 'You can add a participant list for this topic. Optionally, you can add up to three additional columns. For these, you can specify whether a numeric field or a checkbox is displayed in the registration form.',
@@ -64,4 +65,9 @@ $lang = array_merge($lang, [
 	'PTSL_NONE'					=> 'None',
 	'PTSL_CHECKBOX'				=> 'Checkbox',
 	'PTSL_NUMBERS'				=> 'Numerical value',
+
+	'PTSL_DATA_READ_ERROR'		=> 'Unable to read the data record.',
+
+	'PTSL_LOG_EDIT_LIST_ENTRY'	=> '<strong>The list of participants for “%1$s” has been edited.</strong><br>The entry for “%2$s” has been edited.',
+	'PTSL_LOG_DEL_LIST_ENTRY'	=> '<strong>The list of participants for “%1$s” has been edited.</strong><br>The entry for “%2$s” has been deleted..',
 ]);

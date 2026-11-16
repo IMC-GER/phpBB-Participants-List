@@ -50,6 +50,10 @@ class ptsl_main_listener implements EventSubscriberInterface
 			'core.set_topic_visibility_before_sql'		=> 'set_topic_visibility_before_sql',
 			'core.set_post_visibility_before_sql'		=> 'set_post_visibility_before_sql',
 			'core.delete_posts_in_transaction_before'	=> 'delete_posts_in_transaction_before',
+			'core.mcp_view_forum_modify_topicrow'		=> 'modify_topicrow',
+			'core.viewforum_modify_topicrow'			=> 'modify_topicrow',
+			'core.search_modify_tpl_ary'				=> 'modify_tpl_ary',
+			'imcger.recenttopicsng.modify_tpl_ary'		=> 'modify_tpl_ary',
 		];
 	}
 
@@ -114,10 +118,10 @@ class ptsl_main_listener implements EventSubscriberInterface
 		if ($event['post_data']['ptsl_can_add_list'])
 		{
 			$post_data = $event['post_data'];
-			$post_data['topic_ptsl_disp']		= (int) $this->request->variable('topic_ptsl_disp', 0);
-			$post_data['ptsl_column_opt1']		= (int) $this->request->variable('ptsl_column_opt1', 0);
-			$post_data['ptsl_column_opt2']		= (int) $this->request->variable('ptsl_column_opt2', 0);
-			$post_data['ptsl_column_opt3']		= (int) $this->request->variable('ptsl_column_opt3', 0);
+			$post_data['topic_ptsl_disp']		= $this->request->variable('topic_ptsl_disp', false);
+			$post_data['ptsl_column_opt1']		= max(0, min(2, $this->request->variable('ptsl_column_opt1', 0)));
+			$post_data['ptsl_column_opt2']		= max(0, min(2, $this->request->variable('ptsl_column_opt2', 0)));
+			$post_data['ptsl_column_opt3']		= max(0, min(2, $this->request->variable('ptsl_column_opt3', 0)));
 			$post_data['ptsl_column_opt1_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt1_name', '', true));
 			$post_data['ptsl_column_opt2_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt2_name', '', true));
 			$post_data['ptsl_column_opt3_name'] = $this->db->sql_escape($this->request->variable('ptsl_column_opt3_name', '', true));
@@ -155,9 +159,9 @@ class ptsl_main_listener implements EventSubscriberInterface
 
 			if ($topic_ptsl_disp)
 			{
-				$sql		= 'SELECT topic_id FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . ' WHERE topic_id = ' . (int) $topic_id;
+				$sql		= 'SELECT COUNT(topic_id) as row_exists FROM ' . $this->table_prefix . ext::PTSL_TABLE_DATA_TABLE . ' WHERE topic_id = ' . (int) $topic_id;
 				$result		= $this->db->sql_query($sql);
-				$row_exists = $this->db->sql_fetchrow($result);
+				$row_exists = $this->db-> sql_fetchfield('row_exists');
 				$this->db->sql_freeresult($result);
 
 				// Filters the array by the key prefix
@@ -211,12 +215,12 @@ class ptsl_main_listener implements EventSubscriberInterface
 						'PTSL_CHECKBOX'	=> 1,
 						'PTSL_NUMBERS'	=> 2,
 					]),
-					'PTSL_COLUMN_OPT1_NAME'	=> $event['post_data']['ptsl_column_opt1_name'],
-					'PTSL_COLUMN_OPT2_NAME'	=> $event['post_data']['ptsl_column_opt2_name'],
-					'PTSL_COLUMN_OPT3_NAME'	=> $event['post_data']['ptsl_column_opt3_name'],
-					'PTSL_COLUMN_OPT1_DESC'	=> $event['post_data']['ptsl_column_opt1_desc'],
-					'PTSL_COLUMN_OPT2_DESC'	=> $event['post_data']['ptsl_column_opt2_desc'],
-					'PTSL_COLUMN_OPT3_DESC'	=> $event['post_data']['ptsl_column_opt3_desc'],
+					'PTSL_COLUMN_OPT1_NAME'	=> censor_text($event['post_data']['ptsl_column_opt1_name']),
+					'PTSL_COLUMN_OPT2_NAME'	=> censor_text($event['post_data']['ptsl_column_opt2_name']),
+					'PTSL_COLUMN_OPT3_NAME'	=> censor_text($event['post_data']['ptsl_column_opt3_name']),
+					'PTSL_COLUMN_OPT1_DESC'	=> censor_text($event['post_data']['ptsl_column_opt1_desc']),
+					'PTSL_COLUMN_OPT2_DESC'	=> censor_text($event['post_data']['ptsl_column_opt2_desc']),
+					'PTSL_COLUMN_OPT3_DESC'	=> censor_text($event['post_data']['ptsl_column_opt3_desc']),
 				]);
 
 			$event['page_data'] = $page_data;
@@ -259,8 +263,6 @@ class ptsl_main_listener implements EventSubscriberInterface
 			$user_inlist	 = false;
 			$topic_id		 = $event['topic_id'];
 			$ptsl_number_pts = $ptsl_number_opt1 = $ptsl_number_opt2 = $ptsl_number_opt3 = 0;
-			$ptsl_m_edit	 = $this->auth->acl_get('m_edit', $event['forum_id']);
-			$ptsl_m_delete	 = $this->auth->acl_get('m_delete', $event['forum_id']);
 			$url_list_add	 = $this->helper->route('imcger_participantslist_list_controller', ['process' => 'add']);
 			$url_list_edit	 = $this->helper->route('imcger_participantslist_list_controller', ['process' => 'edit']);
 			$url_list_del	 = $this->helper->route('imcger_participantslist_list_controller', ['process' => 'delete']);
@@ -277,7 +279,15 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'WHERE'     => 'pd.topic_id = ' . (int) $topic_id,
 			];
 
-			parse_str($this->user->page['query_string'], $query_para);
+			$append_params = $query_para = [];
+			parse_str($this->user->page['query_string'], $append_params);
+
+			// Encoding the query parameters of the URL
+			foreach ($append_params as $key => $value)
+			{
+				$query_para[urlencode($key)] = urlencode($this->request->variable($key, '1'));
+			}
+
 			$query_para['t'] = (int) $topic_id;
 
 			// Set default sort direction
@@ -315,8 +325,6 @@ class ptsl_main_listener implements EventSubscriberInterface
 					'PTSL_OPT2'			 => $row['ptsl_opt2'],
 					'PTSL_OPT3'			 => $row['ptsl_opt3'],
 					'PTSL_COMMENT'		 => $comment,
-					'U_PTSL_MOD_EDIT'	 => append_sid($url_list_edit, "t={$topic_id}&amp;id={$row['ptsl_id']}"),
-					'U_PTSL_MOD_DEL'	 => append_sid($url_list_del, "t={$topic_id}&amp;id={$row['ptsl_id']}"),
 				];
 
 				$ptsl_number_pts  += $row['ptsl_number'];
@@ -331,6 +339,8 @@ class ptsl_main_listener implements EventSubscriberInterface
 			}
 			$this->db->sql_freeresult($result);
 
+			add_form_key('imcger/participantslist');
+
 			$this->template->assign_vars([
 				'ptsl_table'			=> $ptsl_table,
 				'PTSL_TOPIC_ID'			=> $topic_id,
@@ -342,14 +352,15 @@ class ptsl_main_listener implements EventSubscriberInterface
 				'PTSL_COLUMN_OPT1'		=> $ptsl_table_data['ptsl_column_opt1'],
 				'PTSL_COLUMN_OPT2'		=> $ptsl_table_data['ptsl_column_opt2'],
 				'PTSL_COLUMN_OPT3'		=> $ptsl_table_data['ptsl_column_opt3'],
-				'PTSL_COLUMN_OPT1_NAME'	=> $ptsl_table_data['ptsl_column_opt1_name'],
-				'PTSL_COLUMN_OPT2_NAME'	=> $ptsl_table_data['ptsl_column_opt2_name'],
-				'PTSL_COLUMN_OPT3_NAME'	=> $ptsl_table_data['ptsl_column_opt3_name'],
+				'PTSL_COLUMN_OPT1_NAME'	=> censor_text($ptsl_table_data['ptsl_column_opt1_name']),
+				'PTSL_COLUMN_OPT2_NAME'	=> censor_text($ptsl_table_data['ptsl_column_opt2_name']),
+				'PTSL_COLUMN_OPT3_NAME'	=> censor_text($ptsl_table_data['ptsl_column_opt3_name']),
 				'PTSL_SORT_DIRECTION'	=> $alter_query_para['ptsl-sd'] ?? '' ,
 				'S_PTSL_GO_TO_LIST'		=> true,
 				'S_PTSL_CAN_VIEW_LIST'	=> $ptsl_u_view,
-				'S_PTSL_M_EDIT'			=> $ptsl_m_edit,
-				'S_PTSL_M_DELETE'		=> $ptsl_m_delete,
+				'S_PTSL_M_EDIT'			=> false,
+				'S_PTSL_M_DELETE'		=> false,
+				'S_PTSL_REGISTERED_USER' => (bool) $this->user->data['is_registered'],
 				'S_PTSL_USER_IN_LIST'	=> $user_inlist,
 				'U_PTSL_GO_TO_LIST'		=> append_sid($this->root_path . 'viewtopic.' . $this->php_ext, $query_para) . '#ptsl-anchor',
 				'U_PTSL_SORT_BY_NAME'	=> append_sid($this->root_path . 'viewtopic.' . $this->php_ext, $sort_query_para) . '#ptsl-anchor',
@@ -484,6 +495,40 @@ class ptsl_main_listener implements EventSubscriberInterface
 		$this->db->sql_freeresult($result);
 
 		$this->delete_list(array_column($rowset, 'topic_id'));
+	}
+
+	/**
+	 * Set ptsl icon in topic row
+	 */
+	public function modify_topicrow(object $event): void
+	{
+		$topic_row = $event['topic_row'];
+
+		$topic_row['S_PTSL_HAS_LIST'] = false;
+
+		if ($this->auth->acl_get('u_imcger_ptsl_view') && $event['row']['topic_ptsl_disp'])
+		{
+			$topic_row['S_PTSL_HAS_LIST'] = true;
+		}
+
+		$event['topic_row'] = $topic_row;
+	}
+
+	/**
+	 * Set ptsl icon in topic row
+	 */
+	public function modify_tpl_ary(object $event): void
+	{
+		$tpl_ary = $event['tpl_ary'];
+
+		$tpl_ary['S_PTSL_HAS_LIST'] = false;
+
+		if ($this->auth->acl_get('u_imcger_ptsl_view') && $event['row']['topic_ptsl_disp'])
+		{
+			$tpl_ary['S_PTSL_HAS_LIST'] = true;
+		}
+
+		$event['tpl_ary'] = $tpl_ary;
 	}
 
 	/**
